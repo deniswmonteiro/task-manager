@@ -11,7 +11,7 @@ const SidebarButton = ({ children, variant = "inactive" }) => {
     <li>
       <a
         href="/"
-        className={`block px-3 py-3 duration-300 hover:transition-all hover:duration-300 ${getVariantClasses()}`}
+        className={`flex items-center gap-2 px-3 py-3 duration-300 hover:transition-all hover:duration-300 ${getVariantClasses()}`}
       >
         {children}
       </a>

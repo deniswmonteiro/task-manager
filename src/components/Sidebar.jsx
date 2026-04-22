@@ -1,4 +1,6 @@
 import SidebarButton from "./SidebarButton";
+import HomeIcon from "../assets/icons/home.svg?react";
+import TaskIcon from "../assets/icons/tasks.svg?react";
 
 const Sidebar = () => {
   return (
@@ -10,15 +12,21 @@ const Sidebar = () => {
         <p>
           Um simples{" "}
           <span className="font-medium text-[#00adb5]">
-            organizador de tarefas
+            organizador de tarefas.
           </span>
         </p>
       </div>
       <div className="px-4 py-2">
         <nav>
           <ul className="grid gap-2">
-            <SidebarButton>Início</SidebarButton>
-            <SidebarButton variant="active">Minhas tarefas</SidebarButton>
+            <SidebarButton>
+              <HomeIcon />
+              Início
+            </SidebarButton>
+            <SidebarButton variant="active">
+              <TaskIcon />
+              Minhas tarefas
+            </SidebarButton>
           </ul>
         </nav>
       </div>
