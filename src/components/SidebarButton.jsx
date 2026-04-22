@@ -1,9 +1,14 @@
 const SidebarButton = ({ children, variant = "inactive" }) => {
   const getVariantClasses = () => {
-    if (variant === "active") {
-      return "rounded-lg bg-[#e6f7f8] text-[#00adb5] hover:bg-[#00adb5] hover:text-[#e6f7f8]";
-    } else {
-      return "text-[#35383e] hover:text-[#00adb5]";
+    switch (variant) {
+      case "active":
+        return "rounded-lg bg-[#e6f7f8] text-[#00adb5] hover:bg-[#00adb5] hover:text-[#e6f7f8]";
+
+      case "inactive":
+        return "text-[#35383e] hover:text-[#00adb5]";
+
+      default:
+        return "text-[#35383e] hover:text-[#00adb5]";
     }
   };
 
