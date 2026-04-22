@@ -1,4 +1,6 @@
-const Task = ({ icon, title }) => {
+import TaskItem from "./TaskItem";
+
+const Task = ({ icon, title, tasks }) => {
   return (
     <div className="rounded-lg bg-white p-6">
       <div className="mb-3 border-b border-[#f4f4f5] pb-1.25">
@@ -7,9 +9,11 @@ const Task = ({ icon, title }) => {
           <p className="text-xs font-semibold">{title}</p>
         </div>
       </div>
-      <div>
-        <p>Nenhuma tarefa</p>
-      </div>
+      <ul className="space-y-3">
+        {tasks.map(task => (
+          <TaskItem task={task} key={task.id} />
+        ))}
+      </ul>
     </div>
   );
 };
