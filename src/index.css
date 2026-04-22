@@ -129,7 +129,7 @@
   }
 
   body {
-    @apply bg-[#f8f8f8];
+    @apply bg-[#f8f8f8] text-[#222];
   }
 }
 

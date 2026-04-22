@@ -4,8 +4,8 @@ const Button = ({ children, variant }) => {
       case "primary":
         return "bg-[#00adb5] text-white hover:shadow-sm hover:shadow-[#00adb5]";
 
-      case "secondary":
-        return "bg-transparent text-[#818181] hover:text-[#ef4444]";
+      case "ghost":
+        return "bg-transparent text-[#818181] hover:text-black";
 
       default:
         return "bg-[#00adb5] text-white hover:shadow-sm hover:shadow-[#00adb5]";
