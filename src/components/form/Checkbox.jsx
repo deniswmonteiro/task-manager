@@ -1,9 +1,9 @@
 import CheckIcon from "../../assets/icons/check.svg?react";
 import LoaderCircleIcon from "../../assets/icons/loader-circle.svg?react";
 
-const Checkbox = ({ taskStatus }) => {
+const Checkbox = ({ task, handleTaskChkChange }) => {
   const getStatusClasses = () => {
-    switch (taskStatus) {
+    switch (task.status) {
       case "done":
         return "bg-[#00adb5] text-[#00adb5]";
       case "in_progress":
@@ -21,11 +21,12 @@ const Checkbox = ({ taskStatus }) => {
     >
       <input
         type="checkbox"
-        checked={`${taskStatus === "done"}`}
+        checked={task.status === "done"}
         className="absolute h-full w-full cursor-pointer opacity-0"
+        onChange={() => handleTaskChkChange(task.id)}
       />
-      {taskStatus === "done" && <CheckIcon />}
-      {taskStatus === "in_progress" && (
+      {task.status === "done" && <CheckIcon />}
+      {task.status === "in_progress" && (
         <LoaderCircleIcon className="animate-spin" />
       )}
     </label>

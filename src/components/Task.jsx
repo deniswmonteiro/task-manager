@@ -1,6 +1,6 @@
 import TaskItem from "./TaskItem";
 
-const Task = ({ icon, title, tasks }) => {
+const Task = ({ icon, title, tasks, handleTaskChkChange }) => {
   return (
     <div className="rounded-lg bg-white p-6">
       <div className="mb-3 border-b border-[#f4f4f5] pb-1.25">
@@ -11,7 +11,11 @@ const Task = ({ icon, title, tasks }) => {
       </div>
       <ul className="space-y-3">
         {tasks.map(task => (
-          <TaskItem task={task} key={task.id} />
+          <TaskItem
+            task={task}
+            key={task.id}
+            handleTaskChkChange={handleTaskChkChange}
+          />
         ))}
       </ul>
     </div>

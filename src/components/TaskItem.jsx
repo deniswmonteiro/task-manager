@@ -1,7 +1,7 @@
 import Checkbox from "./form/Checkbox";
 import DetailsIcon from "../assets/icons/details.svg?react";
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, handleTaskChkChange }) => {
   const getStatusClasses = () => {
     switch (task.status) {
       case "done":
@@ -17,10 +17,10 @@ const TaskItem = ({ task }) => {
 
   return (
     <li
-      className={`flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm ${getStatusClasses()}`}
+      className={`flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm duration-300 ${getStatusClasses()}`}
     >
       <p className="flex items-center gap-3">
-        <Checkbox taskStatus={task.status} />
+        <Checkbox task={task} handleTaskChkChange={handleTaskChkChange} />
         {task.title}
       </p>
       <a

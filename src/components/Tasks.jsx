@@ -9,10 +9,32 @@ import Task from "./Task";
 import TasksData from "../data/TasksData";
 
 const Tasks = () => {
-  const [tasks] = React.useState(TasksData);
+  const [tasks, setTasks] = React.useState(TasksData);
   const morningTasks = tasks.filter(task => task.time === "morning");
   const afternoonTasks = tasks.filter(task => task.time === "afternoon");
   const eveningTasks = tasks.filter(task => task.time === "evening");
+
+  const handleTaskChkChange = taskId => {
+    const newTask = tasks.map(task => {
+      if (task.id !== taskId) return task;
+
+      if (task.status === "not_stated") {
+        return { ...task, status: "in_progress" };
+      }
+
+      if (task.status === "in_progress") {
+        return { ...task, status: "done" };
+      }
+
+      if (task.status === "done") {
+        return { ...task, status: "not_stated" };
+      }
+
+      return task;
+    });
+
+    setTasks(newTask);
+  };
 
   return (
     <main className="h-screen w-full overflow-y-auto px-8 py-16">
@@ -38,9 +60,24 @@ const Tasks = () => {
 
       {/* Lista de tarefas */}
       <section className="mt-6 grid gap-6 rounded-xl">
-        <Task icon={<SunIcon />} title="Manhã" tasks={morningTasks} />
-        <Task icon={<CloudSunIcon />} title="Tarde" tasks={afternoonTasks} />
-        <Task icon={<MoonIcon />} title="Noite" tasks={eveningTasks} />
+        <Task
+          icon={<SunIcon />}
+          title="Manhã"
+          tasks={morningTasks}
+          handleTaskChkChange={handleTaskChkChange}
+        />
+        <Task
+          icon={<CloudSunIcon />}
+          title="Tarde"
+          tasks={afternoonTasks}
+          handleTaskChkChange={handleTaskChkChange}
+        />
+        <Task
+          icon={<MoonIcon />}
+          title="Noite"
+          tasks={eveningTasks}
+          handleTaskChkChange={handleTaskChkChange}
+        />
       </section>
     </main>
   );
