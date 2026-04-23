@@ -1,7 +1,8 @@
 import Checkbox from "./form/Checkbox";
 import DetailsIcon from "../assets/icons/details.svg?react";
+import TrashsIcon from "../assets/icons/trash.svg?react";
 
-const TaskItem = ({ task, handleTaskChkChange }) => {
+const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
   const getStatusClasses = () => {
     switch (task.status) {
       case "done":
@@ -23,12 +24,18 @@ const TaskItem = ({ task, handleTaskChkChange }) => {
         <Checkbox task={task} handleTaskChkChange={handleTaskChkChange} />
         {task.title}
       </p>
-      <a
-        href="#"
-        className="text-[#9A9C9F] duration-300 hover:text-[#2b2d42] hover:duration-300"
-      >
-        <DetailsIcon />
-      </a>
+      <p className="flex items-center gap-3 text-[#9A9C9F] duration-300">
+        <button
+          type="button"
+          className="cursor-pointer hover:text-[#2b2d42] hover:duration-300"
+          onClick={() => handleTaskDelete(task.id)}
+        >
+          <TrashsIcon />
+        </button>
+        <a href="#" className="hover:text-[#2b2d42] hover:duration-300">
+          <DetailsIcon />
+        </a>
+      </p>
     </li>
   );
 };

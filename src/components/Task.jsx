@@ -1,6 +1,12 @@
 import TaskItem from "./TaskItem";
 
-const Task = ({ icon, title, tasks, handleTaskChkChange }) => {
+const Task = ({
+  icon,
+  title,
+  tasks,
+  handleTaskChkChange,
+  handleTaskDelete,
+}) => {
   return (
     <div className="rounded-lg bg-white p-6">
       <div className="mb-3 border-b border-[#f4f4f5] pb-1.25">
@@ -15,6 +21,7 @@ const Task = ({ icon, title, tasks, handleTaskChkChange }) => {
             task={task}
             key={task.id}
             handleTaskChkChange={handleTaskChkChange}
+            handleTaskDelete={handleTaskDelete}
           />
         ))}
       </ul>

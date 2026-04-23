@@ -36,6 +36,12 @@ const Tasks = () => {
     setTasks(newTask);
   };
 
+  const handleTaskDelete = taskId => {
+    const newTask = tasks.filter(task => task.id !== taskId);
+
+    setTasks(newTask);
+  };
+
   return (
     <main className="h-screen w-full overflow-y-auto px-8 py-16">
       {/* Ações */}
@@ -65,18 +71,21 @@ const Tasks = () => {
           title="Manhã"
           tasks={morningTasks}
           handleTaskChkChange={handleTaskChkChange}
+          handleTaskDelete={handleTaskDelete}
         />
         <Task
           icon={<CloudSunIcon />}
           title="Tarde"
           tasks={afternoonTasks}
           handleTaskChkChange={handleTaskChkChange}
+          handleTaskDelete={handleTaskDelete}
         />
         <Task
           icon={<MoonIcon />}
           title="Noite"
           tasks={eveningTasks}
           handleTaskChkChange={handleTaskChkChange}
+          handleTaskDelete={handleTaskDelete}
         />
       </section>
     </main>
