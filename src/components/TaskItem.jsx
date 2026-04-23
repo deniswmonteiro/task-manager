@@ -1,3 +1,6 @@
+import Checkbox from "./form/Checkbox";
+import DetailsIcon from "../assets/icons/details.svg?react";
+
 const TaskItem = ({ task }) => {
   const getStatusClasses = () => {
     switch (task.status) {
@@ -14,9 +17,18 @@ const TaskItem = ({ task }) => {
 
   return (
     <li
-      className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm ${getStatusClasses()}`}
+      className={`flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm ${getStatusClasses()}`}
     >
-      {task.title}
+      <p className="flex items-center gap-3">
+        <Checkbox taskStatus={task.status} />
+        {task.title}
+      </p>
+      <a
+        href="#"
+        className="text-[#9A9C9F] duration-300 hover:text-[#2b2d42] hover:duration-300"
+      >
+        <DetailsIcon />
+      </a>
     </li>
   );
 };

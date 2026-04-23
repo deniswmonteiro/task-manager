@@ -1,6 +1,6 @@
 import React from "react";
 import TrashIcon from "../assets/icons/trash.svg?react";
-import AddIcon from "../assets/icons/Add.svg?react";
+import AddIcon from "../assets/icons/add.svg?react";
 import SunIcon from "../assets/icons/sun.svg?react";
 import CloudSunIcon from "../assets/icons/cloud-sun.svg?react";
 import MoonIcon from "../assets/icons/moon.svg?react";
@@ -15,7 +15,7 @@ const Tasks = () => {
   const eveningTasks = tasks.filter(task => task.time === "evening");
 
   return (
-    <main className="w-full px-8 py-16">
+    <main className="h-screen w-full overflow-y-auto px-8 py-16">
       {/* Ações */}
       <section className="flex w-full justify-between">
         <div>
