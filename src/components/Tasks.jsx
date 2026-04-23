@@ -7,6 +7,7 @@ import MoonIcon from "../assets/icons/moon.svg?react";
 import Button from "./Button";
 import Task from "./Task";
 import TasksData from "../data/TasksData";
+import { toast } from "sonner";
 
 const Tasks = () => {
   const [tasks, setTasks] = React.useState(TasksData);
@@ -19,14 +20,17 @@ const Tasks = () => {
       if (task.id !== taskId) return task;
 
       if (task.status === "not_stated") {
+        toast.success("Tarefa iniciada com sucesso.");
         return { ...task, status: "in_progress" };
       }
 
       if (task.status === "in_progress") {
+        toast.success("Tarefa concluída com sucesso.");
         return { ...task, status: "done" };
       }
 
       if (task.status === "done") {
+        toast.success("Tarefa reiniciada com sucesso.");
         return { ...task, status: "not_stated" };
       }
 
@@ -40,6 +44,7 @@ const Tasks = () => {
     const newTask = tasks.filter(task => task.id !== taskId);
 
     setTasks(newTask);
+    toast.success("Tarefa excluída com sucesso.");
   };
 
   return (
