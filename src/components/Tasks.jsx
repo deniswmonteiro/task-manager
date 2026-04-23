@@ -19,7 +19,7 @@ const Tasks = () => {
     const newTask = tasks.map(task => {
       if (task.id !== taskId) return task;
 
-      if (task.status === "not_stated") {
+      if (task.status === "not_started") {
         toast.success("Tarefa iniciada com sucesso.");
         return { ...task, status: "in_progress" };
       }
@@ -31,7 +31,7 @@ const Tasks = () => {
 
       if (task.status === "done") {
         toast.success("Tarefa reiniciada com sucesso.");
-        return { ...task, status: "not_stated" };
+        return { ...task, status: "not_started" };
       }
 
       return task;
