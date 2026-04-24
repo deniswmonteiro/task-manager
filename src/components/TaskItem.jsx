@@ -1,6 +1,5 @@
 import Checkbox from "./form/Checkbox";
-import DetailsIcon from "../assets/icons/details.svg?react";
-import TrashsIcon from "../assets/icons/trash.svg?react";
+import { DetailsIcon, TrashIcon } from "../assets/icons";
 
 const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
   const getStatusClasses = () => {
@@ -30,7 +29,7 @@ const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
           className="cursor-pointer hover:text-[#2b2d42] hover:duration-300"
           onClick={() => handleTaskDelete(task.id)}
         >
-          <TrashsIcon />
+          <TrashIcon />
         </button>
         <a href="#" className="hover:text-[#2b2d42] hover:duration-300">
           <DetailsIcon />

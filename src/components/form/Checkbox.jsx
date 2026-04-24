@@ -1,5 +1,4 @@
-import CheckIcon from "../../assets/icons/check.svg?react";
-import LoaderCircleIcon from "../../assets/icons/loader-circle.svg?react";
+import { CheckIcon, LoaderIcon } from "../../assets/icons";
 
 const Checkbox = ({ task, handleTaskChkChange }) => {
   const getStatusClasses = () => {
@@ -26,9 +25,7 @@ const Checkbox = ({ task, handleTaskChkChange }) => {
         onChange={() => handleTaskChkChange(task.id)}
       />
       {task.status === "done" && <CheckIcon />}
-      {task.status === "in_progress" && (
-        <LoaderCircleIcon className="animate-spin" />
-      )}
+      {task.status === "in_progress" && <LoaderIcon className="animate-spin" />}
     </label>
   );
 };
