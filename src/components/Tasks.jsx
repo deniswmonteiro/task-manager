@@ -1,15 +1,16 @@
 import React from "react";
+import { toast } from "sonner";
+
 import {
-  TrashIcon,
   AddIcon,
-  SunIcon,
   CloudSunIcon,
   MoonIcon,
+  SunIcon,
+  TrashIcon,
 } from "../assets/icons";
+import TasksData from "../data/TasksData";
 import Button from "./Button";
 import Task from "./Task";
-import TasksData from "../data/TasksData";
-import { toast } from "sonner";
 
 const Tasks = () => {
   const [tasks, setTasks] = React.useState(TasksData);

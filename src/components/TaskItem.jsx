@@ -1,5 +1,5 @@
-import Checkbox from "./form/Checkbox";
 import { DetailsIcon, TrashIcon } from "../assets/icons";
+import Checkbox from "./form/Checkbox";
 
 const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
   const getStatusClasses = () => {
