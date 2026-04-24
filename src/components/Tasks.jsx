@@ -9,11 +9,14 @@ import {
   TrashIcon,
 } from "../assets/icons";
 import TasksData from "../data/TasksData";
+import AddTaskModal from "./AddTaskModal";
 import Button from "./Button";
 import Task from "./Task";
 
 const Tasks = () => {
   const [tasks, setTasks] = React.useState(TasksData);
+  const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
+
   const morningTasks = tasks.filter(task => task.time === "morning");
   const afternoonTasks = tasks.filter(task => task.time === "afternoon");
   const eveningTasks = tasks.filter(task => task.time === "evening");
@@ -65,10 +68,12 @@ const Tasks = () => {
             Limpar tarefas
             <TrashIcon />
           </Button>
-          <Button variant="primary">
+          <Button variant="primary" onClick={() => setAddTaskModalIsOpen(true)}>
             Nova tarefa
             <AddIcon />
           </Button>
+
+          <AddTaskModal isOpen={addTaskModalIsOpen} />
         </div>
       </section>
 

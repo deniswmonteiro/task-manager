@@ -1,4 +1,4 @@
-const Button = ({ children, variant }) => {
+const Button = ({ children, variant, ...props }) => {
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
@@ -16,6 +16,7 @@ const Button = ({ children, variant }) => {
     <button
       type="button"
       className={`flex cursor-pointer items-center gap-1 rounded-md px-3 py-2 text-xs font-semibold duration-300 hover:transition-all hover:duration-300 ${getVariantClasses()}`}
+      {...props}
     >
       {children}
     </button>
