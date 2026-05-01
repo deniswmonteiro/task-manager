@@ -129,7 +129,7 @@
   }
 
   body {
-    @apply overflow-hidden bg-[#f8f8f8] text-[#222];
+    @apply overflow-hidden bg-[#f8f8f8] text-[#35383e];
   }
 }
 
