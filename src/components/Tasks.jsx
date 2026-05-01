@@ -73,7 +73,10 @@ const Tasks = () => {
             <AddIcon />
           </Button>
 
-          <AddTaskModal isOpen={addTaskModalIsOpen} />
+          <AddTaskModal
+            modalIsOpen={addTaskModalIsOpen}
+            handleModalClose={() => setAddTaskModalIsOpen(false)}
+          />
         </div>
       </section>
 
