@@ -1,4 +1,5 @@
 import { DetailsIcon, TrashIcon } from "../assets/icons";
+import Button from "./Button";
 import Checkbox from "./form/Checkbox";
 
 const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
@@ -24,14 +25,10 @@ const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
         {task.title}
       </p>
       <p className="text-brand-dark-blue/70 flex items-center gap-3 duration-300">
-        <button
-          type="button"
-          className="hover:text-brand-dark-blue cursor-pointer hover:duration-300"
-          onClick={() => handleTaskDelete(task.id)}
-        >
+        <Button color="ghost" onClick={() => handleTaskDelete(task.id)}>
           <TrashIcon />
-        </button>
-        <a href="#" className="hover:text-[#2b2d42] hover:duration-300">
+        </Button>
+        <a href="#" className="hover:text-brand-dark-blue hover:duration-300">
           <DetailsIcon />
         </a>
       </p>

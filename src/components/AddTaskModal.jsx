@@ -121,10 +121,10 @@ const AddTaskModal = ({
                 />
               </div>
               <div className="flex items-center justify-center gap-3">
-                <Button variant="secondary" size="lg" onClick={handleClose}>
+                <Button color="secondary" size="lg" onClick={handleClose}>
                   Cancelar
                 </Button>
-                <Button variant="primary" size="lg" onClick={handleSubmit}>
+                <Button color="primary" size="lg" onClick={handleSubmit}>
                   Salvar
                 </Button>
               </div>

@@ -69,20 +69,14 @@ const Tasks = () => {
           <h2 className="text-xl font-semibold">Minhas tarefas</h2>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost">
+          <Button color="ghost">
             Limpar tarefas
             <TrashIcon />
           </Button>
-          <Button variant="primary" onClick={() => setAddTaskModalIsOpen(true)}>
+          <Button color="primary" onClick={() => setAddTaskModalIsOpen(true)}>
             Nova tarefa
             <AddIcon />
           </Button>
-
-          <AddTaskModal
-            modalIsOpen={addTaskModalIsOpen}
-            handleModalClose={() => setAddTaskModalIsOpen(false)}
-            handleAddTaskSubmit={handleAddTaskSubmit}
-          />
         </div>
       </section>
 
@@ -110,6 +104,12 @@ const Tasks = () => {
           handleTaskDelete={handleTaskDelete}
         />
       </section>
+
+      <AddTaskModal
+        modalIsOpen={addTaskModalIsOpen}
+        handleModalClose={() => setAddTaskModalIsOpen(false)}
+        handleAddTaskSubmit={handleAddTaskSubmit}
+      />
     </main>
   );
 };
