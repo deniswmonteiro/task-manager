@@ -18,8 +18,10 @@ const Task = ({
       <ul className="space-y-3">
         {tasks.map(task => (
           <TaskItem
-            task={task}
             key={task.id}
+            id={task.id}
+            title={task.title}
+            status={task.status}
             handleTaskChkChange={handleTaskChkChange}
             handleTaskDelete={handleTaskDelete}
           />

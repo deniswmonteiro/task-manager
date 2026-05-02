@@ -1,8 +1,8 @@
 import { CheckIcon, LoaderIcon } from "../../assets/icons";
 
-const Checkbox = ({ task, handleTaskChkChange }) => {
+const Checkbox = ({ id, status, handleTaskChkChange }) => {
   const getStatusClasses = () => {
-    switch (task.status) {
+    switch (status) {
       case "done":
         return "bg-brand-primary text-brand-primary";
       case "in_progress":
@@ -20,12 +20,12 @@ const Checkbox = ({ task, handleTaskChkChange }) => {
     >
       <input
         type="checkbox"
-        checked={task.status === "done"}
+        checked={status === "done"}
         className="absolute h-full w-full cursor-pointer opacity-0"
-        onChange={() => handleTaskChkChange(task.id)}
+        onChange={() => handleTaskChkChange(id)}
       />
-      {task.status === "done" && <CheckIcon />}
-      {task.status === "in_progress" && <LoaderIcon className="animate-spin" />}
+      {status === "done" && <CheckIcon />}
+      {status === "in_progress" && <LoaderIcon className="animate-spin" />}
     </label>
   );
 };
