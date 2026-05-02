@@ -15,24 +15,34 @@ const AddTaskModal = ({
   handleModalClose,
   handleAddTaskSubmit,
 }) => {
-  const [title, setTitle] = React.useState("");
-  const [time, setTime] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  /** Controlled Components */
+  // const [title, setTitle] = React.useState("");
+  // const [time, setTime] = React.useState("");
+  // const [description, setDescription] = React.useState("");
 
-  const nodeRef = React.useRef();
+  const nodeRef = React.useRef(null);
 
-  const resetForm = () => {
-    setTitle("");
-    setTime("");
-    setDescription("");
-  };
+  /** Uncontrolled Components */
+  const titleRef = React.useRef(null);
+  const timeRef = React.useRef(null);
+  const descriptionRef = React.useRef(null);
+
+  // const resetForm = () => {
+  //   setTitle("");
+  //   setTime("");
+  //   setDescription("");
+  // };
 
   const handleClose = () => {
-    resetForm();
+    // resetForm();
     handleModalClose();
   };
 
   const handleSubmit = () => {
+    const title = titleRef.current.value;
+    const time = timeRef.current.value;
+    const description = descriptionRef.current.value;
+
     if (!title.trim() || !time.trim() || !description.trim()) {
       toast.error("Preencha todos os campos.");
       return;
@@ -79,12 +89,14 @@ const AddTaskModal = ({
                   id="title"
                   label={"Título"}
                   placeholder="Título da tarefa"
-                  value={title}
-                  onChange={e => setTitle(e.target.value)}
+                  // value={title}
+                  // onChange={e => setTitle(e.target.value)}
+                  ref={titleRef}
                 />
                 <Select
                   id="time"
                   label={"Horário"}
+                  defaultValue=""
                   options={[
                     {
                       value: "",
@@ -95,15 +107,17 @@ const AddTaskModal = ({
                     { value: "afternoon", label: "Tarde" },
                     { value: "evening", label: "Noite" },
                   ]}
-                  value={time}
-                  onChange={e => setTime(e.target.value)}
+                  // value={time}
+                  // onChange={e => setTime(e.target.value)}
+                  ref={timeRef}
                 />
                 <Input
                   id="description"
                   label="Descrição"
                   placeholder="Descreva a tarefa"
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
+                  // value={description}
+                  // onChange={e => setDescription(e.target.value)}
+                  ref={descriptionRef}
                 />
               </div>
               <div className="flex items-center justify-center gap-3">

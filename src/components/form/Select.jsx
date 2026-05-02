@@ -1,6 +1,6 @@
 import Label from "./Label";
 
-const Select = ({ label, id, options, ...props }) => {
+const Select = ({ label, id, options, ref, ...props }) => {
   return (
     <div className="flex flex-col items-start gap-1">
       <Label htmlFor={id}>{label}</Label>
@@ -8,6 +8,7 @@ const Select = ({ label, id, options, ...props }) => {
         <select
           className="w-full appearance-none rounded-lg border border-solid border-[#cccccc] px-4 py-3 pr-10 text-sm outline-0 duration-300 focus:border-[#00adb5] focus:duration-300"
           id={id}
+          ref={ref}
           {...props}
         >
           {options.map(option => (
@@ -15,7 +16,6 @@ const Select = ({ label, id, options, ...props }) => {
               key={option.value}
               value={option.value}
               disabled={option.disabled ?? false}
-              selected={option.selected ?? false}
             >
               {option.label}
             </option>
