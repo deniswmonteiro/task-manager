@@ -3,6 +3,7 @@ import "./AddTaskModal.css";
 import React from "react";
 import { createPortal } from "react-dom";
 import { CSSTransition } from "react-transition-group";
+import { toast } from "sonner";
 import { v4 } from "uuid";
 
 import Button from "./Button";
@@ -32,6 +33,11 @@ const AddTaskModal = ({
   };
 
   const handleSubmit = () => {
+    if (!title.trim() || !time.trim() || !description.trim()) {
+      toast.error("Preencha todos os campos.");
+      return;
+    }
+
     handleAddTaskSubmit({
       id: v4(),
       title,
