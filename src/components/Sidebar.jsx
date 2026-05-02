@@ -1,5 +1,5 @@
 import { HomeIcon, TasksIcon } from "../assets/icons";
-import SidebarButton from "./SidebarButton";
+import SidebarLink from "./SidebarLink";
 
 const Sidebar = () => {
   return (
@@ -18,14 +18,14 @@ const Sidebar = () => {
       <div className="px-4 py-2">
         <nav>
           <ul className="grid gap-2">
-            <SidebarButton>
+            <SidebarLink>
               <HomeIcon />
               Início
-            </SidebarButton>
-            <SidebarButton variant="active">
+            </SidebarLink>
+            <SidebarLink state="active">
               <TasksIcon />
               Minhas tarefas
-            </SidebarButton>
+            </SidebarLink>
           </ul>
         </nav>
       </div>
