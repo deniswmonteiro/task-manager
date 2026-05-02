@@ -2,13 +2,13 @@ const SidebarButton = ({ children, variant = "inactive" }) => {
   const getVariantClasses = () => {
     switch (variant) {
       case "active":
-        return "rounded-lg bg-[#e6f7f8] text-[#00adb5] hover:bg-[#00adb5] hover:text-[#e6f7f8]";
+        return "rounded-lg bg-brand-primary/20 text-brand-primary hover:bg-brand-primary hover:text-white";
 
       case "inactive":
-        return "text-[#35383e] hover:text-[#00adb5]";
+        return "text-brand-dark-blue hover:text-brand-primary";
 
       default:
-        return "text-[#35383e] hover:text-[#00adb5]";
+        return "text-brand-dark-blue hover:text-brand-primary";
     }
   };
 

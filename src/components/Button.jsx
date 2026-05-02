@@ -2,16 +2,16 @@ const Button = ({ children, variant, size, ...props }) => {
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
-        return "bg-[#00adb5] text-white hover:shadow-sm hover:shadow-[#00adb5]";
+        return "bg-brand-primary text-white hover:shadow-sm hover:shadow-brand-primary";
 
       case "secondary":
-        return "bg-[#eeeeee] text-[#35383e] hover:shadow-sm hover:shadow-[#eeeeee]";
+        return "bg-brand-light-gray text-brand-dark-blue hover:shadow-sm hover:shadow-brand-light-gray";
 
       case "ghost":
-        return "bg-transparent text-[#818181] hover:text-[#35383e]";
+        return "bg-transparent text-brand-dark-gray hover:text-brand-dark-blue";
 
       default:
-        return "bg-[#00adb5] text-white hover:shadow-sm hover:shadow-[#00adb5]";
+        return "bg-brand-primary text-white hover:shadow-sm hover:shadow-brand-primary";
     }
   };
 

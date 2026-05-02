@@ -4,13 +4,13 @@ const Checkbox = ({ task, handleTaskChkChange }) => {
   const getStatusClasses = () => {
     switch (task.status) {
       case "done":
-        return "bg-[#00adb5] text-[#00adb5]";
+        return "bg-brand-primary text-brand-primary";
       case "in_progress":
-        return "bg-[#ffaa04] text-[#ffaa04]";
+        return "bg-brand-process text-brand-process";
       case "not_started":
-        return "bg-[#2b2d42]/20 text-[#2b2d42]";
+        return "bg-brand-light-gray text-brand-light-gray";
       default:
-        return "bg-[#2b2d42]/20 text-[#2b2d42]";
+        return "bg-brand-light-gray text-brand-light-gray";
     }
   };
 

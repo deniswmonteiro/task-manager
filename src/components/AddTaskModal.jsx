@@ -77,10 +77,10 @@ const AddTaskModal = ({
           >
             <div className="w-85 space-y-5 rounded-xl bg-white p-5 text-center shadow">
               <div>
-                <h2 className="mb-1 text-xl font-semibold text-[#35383e]">
+                <h2 className="text-brand-dark-blue mb-1 text-xl font-semibold">
                   Nova tarefa
                 </h2>
-                <p className="text-sm text-[#9a9c9f]">
+                <p className="text-brand-text-gray text-sm">
                   Insira as informações abaixo
                 </p>
               </div>

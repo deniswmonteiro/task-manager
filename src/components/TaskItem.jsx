@@ -5,13 +5,13 @@ const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
   const getStatusClasses = () => {
     switch (task.status) {
       case "done":
-        return "bg-[#00adb5]/10 text-[#00adb5]";
+        return "bg-brand-primary/10 text-brand-primary";
       case "in_progress":
-        return "bg-[#ffaa04]/10 text-[#ffaa04]";
+        return "bg-brand-process/10 text-brand-process";
       case "not_started":
-        return "bg-[#2b2d42]/10 text-[#2b2d42]";
+        return "bg-brand-dark-blue/10 text-brand-dark-blue";
       default:
-        return "bg-[#2b2d42]/10 text-[#2b2d42]";
+        return "bg-brand-dark-blue/10 text-brand-dark-blue";
     }
   };
 
@@ -23,10 +23,10 @@ const TaskItem = ({ task, handleTaskChkChange, handleTaskDelete }) => {
         <Checkbox task={task} handleTaskChkChange={handleTaskChkChange} />
         {task.title}
       </p>
-      <p className="flex items-center gap-3 text-[#9A9C9F] duration-300">
+      <p className="text-brand-dark-blue/70 flex items-center gap-3 duration-300">
         <button
           type="button"
-          className="cursor-pointer hover:text-[#2b2d42] hover:duration-300"
+          className="hover:text-brand-dark-blue cursor-pointer hover:duration-300"
           onClick={() => handleTaskDelete(task.id)}
         >
           <TrashIcon />

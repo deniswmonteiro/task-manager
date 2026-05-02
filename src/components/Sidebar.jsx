@@ -4,13 +4,13 @@ import SidebarButton from "./SidebarButton";
 const Sidebar = () => {
   return (
     <aside className="h-screen bg-white">
-      <div className="w-75 space-y-4 px-8 py-6 after:mt-6 after:block after:h-px after:w-full after:bg-[#00adb5]">
-        <h1 className="text-xl font-semibold text-[#00adb5]">
+      <div className="after:bg-brand-primary w-75 space-y-4 px-8 py-6 after:mt-6 after:block after:h-px after:w-full">
+        <h1 className="text-brand-primary text-xl font-semibold">
           <a href="/">Task Manager</a>
         </h1>
         <p>
           Um simples{" "}
-          <span className="font-medium text-[#00adb5]">
+          <span className="text-brand-primary font-medium">
             organizador de tarefas.
           </span>
         </p>

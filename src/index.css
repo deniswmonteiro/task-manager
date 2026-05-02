@@ -129,10 +129,22 @@
   }
 
   body {
-    @apply overflow-hidden bg-[#f8f8f8] text-[#35383e];
+    @apply bg-brand-background text-brand-dark-blue overflow-hidden;
   }
 }
 
 @theme {
+  /** Fonts */
   --font-sans: "Poppins", sans-serif;
+
+  /** Colors */
+  --color-brand-dark-blue: #35383e;
+  --color-brand-primary: #00adb5;
+  --color-brand-dark-gray: #818181;
+  --color-brand-light-gray: #cccccc;
+  --color-brand-text-gray: #9a9c9f;
+  --color-brand-white: #ffffff;
+  --color-brand-background: #f8f8f8;
+  --color-brand-process: #ffaa04;
+  --color-brand-danger: #ef4444;
 }
