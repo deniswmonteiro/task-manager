@@ -3,13 +3,34 @@ import "./AddTaskModal.css";
 import React from "react";
 import { createPortal } from "react-dom";
 import { CSSTransition } from "react-transition-group";
+import { v4 } from "uuid";
 
 import Button from "./Button";
 import Input from "./form/Input";
 import Select from "./form/Select";
 
-const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
+const AddTaskModal = ({
+  modalIsOpen,
+  handleModalClose,
+  handleAddTaskSubmit,
+}) => {
+  const [title, setTitle] = React.useState("");
+  const [time, setTime] = React.useState("");
+  const [description, setDescription] = React.useState("");
+
   const nodeRef = React.useRef();
+
+  const handleSubmit = () => {
+    handleAddTaskSubmit({
+      id: v4(),
+      title,
+      time,
+      description,
+      status: "not_started",
+    });
+
+    handleModalClose();
+  };
 
   // createPortal - é uma forma de renderizar um componente em qualquer lugar do DOM
   // CSSTransition - é uma forma de adicionar transições CSS ao componente
@@ -39,12 +60,14 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
               <div className="space-y-4">
                 <Input
                   id="title"
-                  label="Título"
+                  label={"Título"}
                   placeholder="Título da tarefa"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
                 />
                 <Select
                   id="time"
-                  label="Horário"
+                  label={"Horário"}
                   options={[
                     {
                       value: "",
@@ -56,11 +79,15 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
                     { value: "afternoon", label: "Tarde" },
                     { value: "night", label: "Noite" },
                   ]}
+                  value={time}
+                  onChange={e => setTime(e.target.value)}
                 />
                 <Input
                   id="description"
                   label="Descrição"
                   placeholder="Descreva a tarefa"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
                 />
               </div>
               <div className="flex items-center justify-center gap-3">
@@ -71,7 +98,11 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
                 >
                   Cancelar
                 </Button>
-                <Button variant="primary" size="lg">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={() => handleSubmit()}
+                >
                   Salvar
                 </Button>
               </div>

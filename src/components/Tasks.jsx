@@ -46,6 +46,11 @@ const Tasks = () => {
     setTasks(newTask);
   };
 
+  const handleAddTaskSubmit = task => {
+    setTasks([...tasks, task]);
+    toast.success("Tarefa adicionada com sucesso.");
+  };
+
   const handleTaskDelete = taskId => {
     const newTask = tasks.filter(task => task.id !== taskId);
 
@@ -76,6 +81,7 @@ const Tasks = () => {
           <AddTaskModal
             modalIsOpen={addTaskModalIsOpen}
             handleModalClose={() => setAddTaskModalIsOpen(false)}
+            handleAddTaskSubmit={handleAddTaskSubmit}
           />
         </div>
       </section>
