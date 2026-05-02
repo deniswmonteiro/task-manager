@@ -1,23 +1,24 @@
+import { tv } from "tailwind-variants";
+
 import { CheckIcon, LoaderIcon } from "../../assets/icons";
 
 const Checkbox = ({ id, status, handleTaskChkChange }) => {
-  const getStatusClasses = () => {
-    switch (status) {
-      case "done":
-        return "bg-brand-primary text-brand-primary";
-      case "in_progress":
-        return "bg-brand-process text-brand-process";
-      case "not_started":
-        return "bg-brand-light-gray text-brand-light-gray";
-      default:
-        return "bg-brand-light-gray text-brand-light-gray";
-    }
-  };
+  const backgroundColor = tv({
+    base: "relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg duration-300 hover:scale-105 hover:duration-300",
+    variants: {
+      status: {
+        done: "bg-brand-primary text-brand-primary",
+        in_progress: "bg-brand-process text-brand-process",
+        not_started: "bg-brand-light-gray text-brand-light-gray",
+      },
+    },
+    defaultVariants: {
+      status: "not_stated",
+    },
+  });
 
   return (
-    <label
-      className={`relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg duration-300 ${getStatusClasses()} hover:scale-105 hover:duration-300`}
-    >
+    <label className={backgroundColor({ status })}>
       <input
         type="checkbox"
         checked={status === "done"}

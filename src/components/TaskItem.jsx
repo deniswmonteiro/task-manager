@@ -11,7 +11,7 @@ const TaskItem = ({
   handleTaskChkChange,
   handleTaskDelete,
 }) => {
-  const color = tv({
+  const backgroundColor = tv({
     base: "flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm duration-300",
     variants: {
       status: {
@@ -26,7 +26,7 @@ const TaskItem = ({
   });
 
   return (
-    <li className={color({ status })}>
+    <li className={backgroundColor({ status })}>
       <p className="flex items-center gap-3">
         <Checkbox
           id={id}
