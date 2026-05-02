@@ -6,6 +6,7 @@ import { CSSTransition } from "react-transition-group";
 
 import Button from "./Button";
 import Input from "./form/Input";
+import Select from "./form/Select";
 
 const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
   const nodeRef = React.useRef();
@@ -40,6 +41,21 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
                   id="title"
                   label="Título"
                   placeholder="Título da tarefa"
+                />
+                <Select
+                  id="time"
+                  label="Horário"
+                  options={[
+                    {
+                      value: "",
+                      label: "Selecione o horário",
+                      disabled: true,
+                      selected: true,
+                    },
+                    { value: "morning", label: "Manhã" },
+                    { value: "afternoon", label: "Tarde" },
+                    { value: "night", label: "Noite" },
+                  ]}
                 />
                 <Input
                   id="description"
