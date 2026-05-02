@@ -20,6 +20,17 @@ const AddTaskModal = ({
 
   const nodeRef = React.useRef();
 
+  const resetForm = () => {
+    setTitle("");
+    setTime("");
+    setDescription("");
+  };
+
+  const handleClose = () => {
+    resetForm();
+    handleModalClose();
+  };
+
   const handleSubmit = () => {
     handleAddTaskSubmit({
       id: v4(),
@@ -29,7 +40,7 @@ const AddTaskModal = ({
       status: "not_started",
     });
 
-    handleModalClose();
+    handleClose();
   };
 
   // createPortal - é uma forma de renderizar um componente em qualquer lugar do DOM
@@ -73,11 +84,10 @@ const AddTaskModal = ({
                       value: "",
                       label: "Selecione o horário",
                       disabled: true,
-                      selected: true,
                     },
                     { value: "morning", label: "Manhã" },
                     { value: "afternoon", label: "Tarde" },
-                    { value: "night", label: "Noite" },
+                    { value: "evening", label: "Noite" },
                   ]}
                   value={time}
                   onChange={e => setTime(e.target.value)}
@@ -91,18 +101,10 @@ const AddTaskModal = ({
                 />
               </div>
               <div className="flex items-center justify-center gap-3">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  onClick={() => handleModalClose(false)}
-                >
+                <Button variant="secondary" size="lg" onClick={handleClose}>
                   Cancelar
                 </Button>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={() => handleSubmit()}
-                >
+                <Button variant="primary" size="lg" onClick={handleSubmit}>
                   Salvar
                 </Button>
               </div>
