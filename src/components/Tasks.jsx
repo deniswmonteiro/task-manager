@@ -8,18 +8,28 @@ import {
   SunIcon,
   TrashIcon,
 } from "../assets/icons";
-import TasksData from "../data/TasksData";
 import AddTaskModal from "./AddTaskModal";
 import Button from "./Button";
 import Task from "./Task";
 
 const Tasks = () => {
-  const [tasks, setTasks] = React.useState(TasksData);
+  const [tasks, setTasks] = React.useState([]);
   const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
 
   const morningTasks = tasks.filter(task => task.time === "morning");
   const afternoonTasks = tasks.filter(task => task.time === "afternoon");
   const eveningTasks = tasks.filter(task => task.time === "evening");
+
+  React.useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch("http://localhost:3000/tasks");
+      const result = await response.json();
+
+      setTasks(result);
+    };
+
+    fetchTasks();
+  }, []);
 
   const handleTaskChkChange = taskId => {
     const newTask = tasks.map(task => {
