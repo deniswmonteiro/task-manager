@@ -41,13 +41,6 @@
       "description": "Meditar por 30 minutos.",
       "time": "evening",
       "status": "not_started"
-    },
-    {
-      "id": "JvQyywuP9p8",
-      "title": "Academia",
-      "time": "morning",
-      "description": "Primeira atividade do dia",
-      "status": "not_started"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
