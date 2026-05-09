@@ -8,7 +8,7 @@ const Checkbox = ({ id, status, handleTaskChkChange }) => {
     variants: {
       status: {
         done: "bg-brand-primary text-brand-primary",
-        in_progress: "bg-brand-process text-brand-process",
+        in_progress: "bg-brand-process text-brand-white",
         not_started: "bg-brand-light-gray text-brand-light-gray",
       },
     },

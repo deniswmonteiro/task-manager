@@ -74,16 +74,8 @@ const Tasks = () => {
     toast.success("Tarefa adicionada com sucesso.");
   };
 
-  const handleTaskDelete = async taskId => {
+  const onDeleteTaskSuccess = async taskId => {
     const newTask = tasks.filter(task => task.id !== taskId);
-
-    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-      method: "DELETE",
-    });
-
-    if (!response) {
-      return toast.error("Erro ao excluir tarefa. Tente novamente.");
-    }
 
     setTasks(newTask);
     toast.success("Tarefa excluída com sucesso.");
@@ -118,21 +110,21 @@ const Tasks = () => {
           title="Manhã"
           tasks={morningTasks}
           handleTaskChkChange={handleTaskChkChange}
-          handleTaskDelete={handleTaskDelete}
+          onDeleteTaskSuccess={onDeleteTaskSuccess}
         />
         <Task
           icon={<CloudSunIcon />}
           title="Tarde"
           tasks={afternoonTasks}
           handleTaskChkChange={handleTaskChkChange}
-          handleTaskDelete={handleTaskDelete}
+          onDeleteTaskSuccess={onDeleteTaskSuccess}
         />
         <Task
           icon={<MoonIcon />}
           title="Noite"
           tasks={eveningTasks}
           handleTaskChkChange={handleTaskChkChange}
-          handleTaskDelete={handleTaskDelete}
+          onDeleteTaskSuccess={onDeleteTaskSuccess}
         />
       </section>
 

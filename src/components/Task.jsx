@@ -5,7 +5,7 @@ const Task = ({
   title,
   tasks,
   handleTaskChkChange,
-  handleTaskDelete,
+  onDeleteTaskSuccess,
 }) => {
   return (
     <div className="rounded-lg bg-white p-6">
@@ -23,7 +23,7 @@ const Task = ({
             title={task.title}
             status={task.status}
             handleTaskChkChange={handleTaskChkChange}
-            handleTaskDelete={handleTaskDelete}
+            onDeleteTaskSuccess={onDeleteTaskSuccess}
           />
         ))}
       </ul>
