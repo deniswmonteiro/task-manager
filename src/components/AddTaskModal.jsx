@@ -111,6 +111,7 @@ const AddTaskModal = ({
                   // value={title}
                   // onChange={e => setTitle(e.target.value)}
                   ref={titleRef}
+                  disabled={createIsLoading}
                 />
                 <Select
                   id="time"
@@ -129,6 +130,7 @@ const AddTaskModal = ({
                   // value={time}
                   // onChange={e => setTime(e.target.value)}
                   ref={timeRef}
+                  disabled={createIsLoading}
                 />
                 <Input
                   id="description"
@@ -137,6 +139,7 @@ const AddTaskModal = ({
                   // value={description}
                   // onChange={e => setDescription(e.target.value)}
                   ref={descriptionRef}
+                  disabled={createIsLoading}
                 />
               </div>
               <div className="flex items-center justify-center gap-3">
