@@ -56,25 +56,13 @@ const Tasks = () => {
     setTasks(newTask);
   };
 
-  const handleAddTaskSubmit = async task => {
+  const handleAddTaskSubmit = task => {
     setTasks([...tasks, task]);
-
-    const response = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(task),
-    });
-
-    if (!response) {
-      return toast.error("Erro ao criar tarefa. Tente novamente.");
-    }
 
     toast.success("Tarefa adicionada com sucesso.");
   };
 
-  const onDeleteTaskSuccess = async taskId => {
+  const onDeleteTaskSuccess = taskId => {
     const newTask = tasks.filter(task => task.id !== taskId);
 
     setTasks(newTask);

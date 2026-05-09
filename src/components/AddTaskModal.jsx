@@ -6,6 +6,7 @@ import { CSSTransition } from "react-transition-group";
 import { toast } from "sonner";
 import { v4 } from "uuid";
 
+import { LoaderIcon } from "../assets/icons";
 import Button from "./Button";
 import Input from "./form/Input";
 import Select from "./form/Select";
@@ -19,6 +20,7 @@ const AddTaskModal = ({
   // const [title, setTitle] = React.useState("");
   // const [time, setTime] = React.useState("");
   // const [description, setDescription] = React.useState("");
+  const [createIsLoading, setCreateIsLoading] = React.useState(false);
 
   const nodeRef = React.useRef(null);
 
@@ -38,7 +40,9 @@ const AddTaskModal = ({
     handleModalClose();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setCreateIsLoading(true);
+
     const title = titleRef.current.value;
     const time = timeRef.current.value;
     const description = descriptionRef.current.value;
@@ -48,14 +52,29 @@ const AddTaskModal = ({
       return;
     }
 
-    handleAddTaskSubmit({
+    const task = {
       id: v4(),
       title,
       time,
       description,
       status: "not_started",
+    };
+
+    const response = await fetch("http://localhost:3000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
     });
 
+    if (!response) {
+      setCreateIsLoading(false);
+      return toast.error("Erro ao criar tarefa. Tente novamente.");
+    }
+
+    setCreateIsLoading(false);
+    handleAddTaskSubmit(task);
     handleClose();
   };
 
@@ -124,8 +143,20 @@ const AddTaskModal = ({
                 <Button color="secondary" size="lg" onClick={handleClose}>
                   Cancelar
                 </Button>
-                <Button color="primary" size="lg" onClick={handleSubmit}>
-                  Salvar
+                <Button
+                  color="primary"
+                  size="lg"
+                  onClick={handleSubmit}
+                  disabled={!createIsLoading}
+                >
+                  {createIsLoading ? (
+                    <>
+                      Salvando{" "}
+                      <LoaderIcon className="text-brand-text-white animate-spin" />
+                    </>
+                  ) : (
+                    "Salvar"
+                  )}
                 </Button>
               </div>
             </div>
