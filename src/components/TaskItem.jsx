@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { tv } from "tailwind-variants";
 
@@ -68,9 +69,12 @@ const TaskItem = ({
             <TrashIcon />
           )}
         </Button>
-        <a href="#" className="hover:text-brand-dark-blue hover:duration-300">
+        <Link
+          to={`/task/${id}`}
+          className="hover:text-brand-dark-blue hover:duration-300"
+        >
           <DetailsIcon />
-        </a>
+        </Link>
       </p>
     </li>
   );
