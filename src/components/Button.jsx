@@ -10,6 +10,8 @@ const Button = ({ children, color, size, ...props }) => {
         secondary:
           "bg-brand-light-gray text-brand-dark-blue hover:shadow-brand-light-gray hover:shadow-sm",
         ghost: "text-brand-dark-gray hover:text-brand-dark-blue bg-transparent",
+        danger:
+          "bg-brand-danger hover:shadow-brand-danger text-white hover:shadow-sm",
       },
       size: {
         sm: "px-3 py-2 text-xs",

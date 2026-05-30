@@ -103,7 +103,7 @@ const AddTaskModal = ({
                   Insira as informações abaixo
                 </p>
               </div>
-              <div className="space-y-4">
+              <form className="space-y-4">
                 <Input
                   id="title"
                   label={"Título"}
@@ -141,7 +141,7 @@ const AddTaskModal = ({
                   ref={descriptionRef}
                   disabled={createIsLoading}
                 />
-              </div>
+              </form>
               <div className="flex items-center justify-center gap-3">
                 <Button color="secondary" size="lg" onClick={handleClose}>
                   Cancelar
