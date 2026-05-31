@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
-import { ArrowIcon, TrashIcon } from "../assets/icons";
+import { ArrowIcon, LoaderIcon, TrashIcon } from "../assets/icons";
 import { ChevronIcon } from "../assets/icons";
 import Button from "../components/Button";
 import Input from "../components/form/Input";
@@ -10,6 +11,11 @@ import Sidebar from "../components/Sidebar";
 
 const TaskDetailsPage = () => {
   const [task, setTask] = React.useState(null);
+  const [title, setTitle] = React.useState(null);
+  const [time, setTime] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
+  const [deleteIsLoading, setDeleteIsLoading] = React.useState(false);
+  const [updateIsLoading, setUpdateIsLoading] = React.useState(false);
   const { taskId } = useParams();
   const navigate = useNavigate();
 
@@ -21,10 +27,60 @@ const TaskDetailsPage = () => {
       const data = await response.json();
 
       setTask(data);
+      setTitle(data.title);
+      setTime(data.time);
+      setDescription(data.description);
     };
 
     fetchTask();
   }, [taskId]);
+
+  const handleSubmit = async () => {
+    setUpdateIsLoading(true);
+
+    if (!title.trim() || !time.trim() || !description.trim()) {
+      setUpdateIsLoading(false);
+      return toast.error("Preencha todos os campos.");
+    }
+
+    const task = {
+      title,
+      time,
+      description,
+    };
+
+    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+
+    if (!response) {
+      setUpdateIsLoading(false);
+      return toast.error("Erro ao atualizar tarefa. Tente novamente.");
+    }
+
+    setUpdateIsLoading(false);
+    navigate("/");
+  };
+
+  const handleDelete = async () => {
+    setDeleteIsLoading(true);
+
+    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+      method: "DELETE",
+    });
+
+    if (!response) {
+      setDeleteIsLoading(false);
+      return toast.error("Erro ao excluir tarefa. Tente novamente.");
+    }
+
+    setDeleteIsLoading(false);
+    navigate("/");
+  };
 
   if (!task) {
     return <div>Tarefa não encontrada</div>;
@@ -59,9 +115,22 @@ const TaskDetailsPage = () => {
             </h1>
           </div>
 
-          <Button color="danger">
-            <TrashIcon />
-            Deletar tarefa
+          <Button
+            color="danger"
+            onClick={handleDelete}
+            disabled={deleteIsLoading}
+          >
+            {deleteIsLoading ? (
+              <>
+                <LoaderIcon className="text-brand-text-white animate-spin" />{" "}
+                Deletando
+              </>
+            ) : (
+              <>
+                <TrashIcon />
+                Deletar tarefa
+              </>
+            )}
           </Button>
         </div>
         <div>
@@ -70,15 +139,15 @@ const TaskDetailsPage = () => {
               <Input
                 id="name"
                 label={"Nome"}
-                value={task.title}
-                // ref={titleRef}
-                // disabled={deleteIsLoading}
+                defaultValue={title}
+                onChange={e => setTitle(e.target.value)}
+                disabled={updateIsLoading}
               />
 
               <Select
                 id="time"
                 label={"Horário"}
-                defaultValue={task.time}
+                defaultValue={time}
                 options={[
                   {
                     value: "",
@@ -89,25 +158,34 @@ const TaskDetailsPage = () => {
                   { value: "afternoon", label: "Tarde" },
                   { value: "evening", label: "Noite" },
                 ]}
-                // ref={timeRef}
-                // disabled={deleteIsLoading}
+                onChange={e => setTime(e.target.value)}
+                disabled={updateIsLoading}
               />
 
               <Input
                 id="description"
                 label={"Descrição"}
-                value={task.description}
-                // ref={descriptionRef}
-                // disabled={deleteIsLoading}
+                defaultValue={description}
+                onChange={e => setDescription(e.target.value)}
+                disabled={updateIsLoading}
               />
             </div>
 
             <div className="mt-9 flex items-center justify-end gap-3">
-              <Button color="secondary" size="lg" onClick={() => navigate("/")}>
-                Cancelar
-              </Button>
-              <Button color="primary" size="lg">
-                Salvar
+              <Button
+                color="primary"
+                size="lg"
+                onClick={handleSubmit}
+                disabled={updateIsLoading}
+              >
+                {updateIsLoading ? (
+                  <>
+                    Salvando{" "}
+                    <LoaderIcon className="text-brand-text-white animate-spin" />
+                  </>
+                ) : (
+                  "Salvar"
+                )}
               </Button>
             </div>
           </form>

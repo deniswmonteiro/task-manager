@@ -48,8 +48,8 @@ const AddTaskModal = ({
     const description = descriptionRef.current.value;
 
     if (!title.trim() || !time.trim() || !description.trim()) {
-      toast.error("Preencha todos os campos.");
-      return;
+      setCreateIsLoading(false);
+      return toast.error("Preencha todos os campos.");
     }
 
     const task = {
@@ -150,7 +150,7 @@ const AddTaskModal = ({
                   color="primary"
                   size="lg"
                   onClick={handleSubmit}
-                  disabled={!createIsLoading}
+                  disabled={createIsLoading}
                 >
                   {createIsLoading ? (
                     <>

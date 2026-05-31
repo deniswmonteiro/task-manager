@@ -37,7 +37,7 @@ const TaskItem = ({
       method: "DELETE",
     });
 
-    if (!response) {
+    if (!response.ok) {
       setDeleteIsLoading(false);
 
       return toast.error("Erro ao excluir tarefa. Tente novamente.");

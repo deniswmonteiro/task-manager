@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import {
   AddIcon,
   CloudSunIcon,
+  LoaderIcon,
   MoonIcon,
   SunIcon,
   TrashIcon,
@@ -14,6 +15,7 @@ import Task from "./Task";
 
 const Tasks = () => {
   const [tasks, setTasks] = React.useState([]);
+  const [tasksIsLoading, setTasksIsLoading] = React.useState(true);
   const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
 
   const morningTasks = tasks.filter(task => task.time === "morning");
@@ -22,10 +24,21 @@ const Tasks = () => {
 
   React.useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch("http://localhost:3000/tasks");
-      const result = await response.json();
+      try {
+        const response = await fetch("http://localhost:3000/tasks");
 
-      setTasks(result);
+        if (!response.ok) {
+          throw new Error();
+        }
+
+        const result = await response.json();
+
+        setTasks(result);
+      } catch {
+        toast.error("Erro ao carregar tarefas. Tente novamente.");
+      } finally {
+        setTasksIsLoading(false);
+      }
     };
 
     fetchTasks();
@@ -93,27 +106,36 @@ const Tasks = () => {
 
       {/* Lista de tarefas */}
       <section className="mt-6 grid gap-6 rounded-xl">
-        <Task
-          icon={<SunIcon />}
-          title="Manhã"
-          tasks={morningTasks}
-          handleTaskChkChange={handleTaskChkChange}
-          onDeleteTaskSuccess={onDeleteTaskSuccess}
-        />
-        <Task
-          icon={<CloudSunIcon />}
-          title="Tarde"
-          tasks={afternoonTasks}
-          handleTaskChkChange={handleTaskChkChange}
-          onDeleteTaskSuccess={onDeleteTaskSuccess}
-        />
-        <Task
-          icon={<MoonIcon />}
-          title="Noite"
-          tasks={eveningTasks}
-          handleTaskChkChange={handleTaskChkChange}
-          onDeleteTaskSuccess={onDeleteTaskSuccess}
-        />
+        {tasksIsLoading ? (
+          <div className="bg-brand-white text-brand-primary flex items-center justify-center gap-2 rounded-lg p-6 text-sm">
+            Carregando tarefas
+            <LoaderIcon className="animate-spin" />
+          </div>
+        ) : (
+          <>
+            <Task
+              icon={<SunIcon />}
+              title="Manhã"
+              tasks={morningTasks}
+              handleTaskChkChange={handleTaskChkChange}
+              onDeleteTaskSuccess={onDeleteTaskSuccess}
+            />
+            <Task
+              icon={<CloudSunIcon />}
+              title="Tarde"
+              tasks={afternoonTasks}
+              handleTaskChkChange={handleTaskChkChange}
+              onDeleteTaskSuccess={onDeleteTaskSuccess}
+            />
+            <Task
+              icon={<MoonIcon />}
+              title="Noite"
+              tasks={eveningTasks}
+              handleTaskChkChange={handleTaskChkChange}
+              onDeleteTaskSuccess={onDeleteTaskSuccess}
+            />
+          </>
+        )}
       </section>
 
       <AddTaskModal
