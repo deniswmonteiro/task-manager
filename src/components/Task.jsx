@@ -16,16 +16,22 @@ const Task = ({
         </div>
       </div>
       <ul className="space-y-3">
-        {tasks.map(task => (
-          <TaskItem
-            key={task.id}
-            id={task.id}
-            title={task.title}
-            status={task.status}
-            handleTaskChkChange={handleTaskChkChange}
-            onDeleteTaskSuccess={onDeleteTaskSuccess}
-          />
-        ))}
+        {tasks.length === 0 ? (
+          <p className="text-brand-text-gray text-center text-xs">
+            Nenhuma tarefa cadastrada
+          </p>
+        ) : (
+          tasks.map(task => (
+            <TaskItem
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              status={task.status}
+              handleTaskChkChange={handleTaskChkChange}
+              onDeleteTaskSuccess={onDeleteTaskSuccess}
+            />
+          ))
+        )}
       </ul>
     </div>
   );
