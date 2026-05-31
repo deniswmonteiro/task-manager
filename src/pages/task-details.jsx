@@ -63,6 +63,7 @@ const TaskDetailsPage = () => {
     }
 
     setUpdateIsLoading(false);
+    toast.success("Tarefa atualizada com sucesso.");
     navigate("/");
   };
 
@@ -79,6 +80,7 @@ const TaskDetailsPage = () => {
     }
 
     setDeleteIsLoading(false);
+    toast.success("Tarefa excluída com sucesso.");
     navigate("/");
   };
 
