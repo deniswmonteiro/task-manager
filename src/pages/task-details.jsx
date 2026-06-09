@@ -23,6 +23,11 @@ const TaskDetailsPage = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
+    defaultValues: {
+      title: "",
+      time: "",
+      description: "",
+    },
   });
 
   React.useEffect(() => {
@@ -129,16 +134,13 @@ const TaskDetailsPage = () => {
           <form onSubmit={handleSubmit(handleSave)}>
             <div className="bg-brand-white space-y-6 rounded-xl p-6">
               <Input
-                id="name"
-                label={"Nome"}
+                id="title"
+                label={"Título"}
                 disabled={isSubmitting}
                 {...register("title", {
-                  required: "O Nome é obrigatório.",
-                  validate: value => {
-                    if (!value.trim()) return "O Nome não pode ser vazio.";
-
-                    return true;
-                  },
+                  required: "O Título é obrigatório.",
+                  validate: value =>
+                    !value.trim() ? "O Título não pode ser vazio." : true,
                 })}
                 error={errors?.title?.message}
               />
@@ -159,6 +161,8 @@ const TaskDetailsPage = () => {
                 disabled={isSubmitting}
                 {...register("time", {
                   required: "O Horário é obrigatório.",
+                  validate: value =>
+                    !value.trim() ? "O Horário não pode ser vazio." : true,
                 })}
                 error={errors?.time?.message}
               />
@@ -169,11 +173,8 @@ const TaskDetailsPage = () => {
                 disabled={isSubmitting}
                 {...register("description", {
                   required: "A Descrição é obrigatória.",
-                  validate: value => {
-                    if (!value.trim()) return "A Descrição não pode ser vazia.";
-
-                    return true;
-                  },
+                  validate: value =>
+                    !value.trim() ? "A Descrição não pode ser vazia." : true,
                 })}
                 error={errors?.description?.message}
               />

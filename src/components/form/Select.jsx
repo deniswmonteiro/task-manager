@@ -1,6 +1,6 @@
 import Label from "./Label";
 
-const Select = ({ label, id, options, ref, ...props }) => {
+const Select = ({ label, id, options, ref, error, ...props }) => {
   return (
     <div className="flex flex-col items-start gap-1">
       <Label htmlFor={id}>{label}</Label>
@@ -36,6 +36,7 @@ const Select = ({ label, id, options, ref, ...props }) => {
           />
         </svg>
       </div>
+      {error ? <span className="text-xs text-red-500">{error}</span> : null}
     </div>
   );
 };

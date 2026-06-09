@@ -2,6 +2,7 @@ import "./AddTaskModal.css";
 
 import React from "react";
 import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
 import { CSSTransition } from "react-transition-group";
 import { toast } from "sonner";
 import { v4 } from "uuid";
@@ -16,47 +17,32 @@ const AddTaskModal = ({
   handleModalClose,
   handleAddTaskSubmit,
 }) => {
-  /** Controlled Components */
-  // const [title, setTitle] = React.useState("");
-  // const [time, setTime] = React.useState("");
-  // const [description, setDescription] = React.useState("");
-  const [createIsLoading, setCreateIsLoading] = React.useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      title: "",
+      time: "",
+      description: "",
+    },
+  });
 
   const nodeRef = React.useRef(null);
 
-  /** Uncontrolled Components */
-  const titleRef = React.useRef(null);
-  const timeRef = React.useRef(null);
-  const descriptionRef = React.useRef(null);
-
-  // const resetForm = () => {
-  //   setTitle("");
-  //   setTime("");
-  //   setDescription("");
-  // };
-
   const handleClose = () => {
-    // resetForm();
     handleModalClose();
   };
 
-  const handleSubmit = async () => {
-    setCreateIsLoading(true);
-
-    const title = titleRef.current.value;
-    const time = timeRef.current.value;
-    const description = descriptionRef.current.value;
-
-    if (!title.trim() || !time.trim() || !description.trim()) {
-      setCreateIsLoading(false);
-      return toast.error("Preencha todos os campos.");
-    }
-
+  const handleSave = async data => {
     const task = {
       id: v4(),
-      title,
-      time,
-      description,
+      title: data.title.trim(),
+      time: data.time.trim(),
+      description: data.description.trim(),
       status: "not_started",
     };
 
@@ -68,14 +54,15 @@ const AddTaskModal = ({
       body: JSON.stringify(task),
     });
 
-    if (!response) {
-      setCreateIsLoading(false);
-      return toast.error("Erro ao criar tarefa. Tente novamente.");
-    }
+    if (!response) return toast.error("Erro ao criar tarefa. Tente novamente.");
 
-    setCreateIsLoading(false);
     handleAddTaskSubmit(task);
     handleClose();
+    reset({
+      title: "",
+      time: "",
+      description: "",
+    });
   };
 
   // createPortal - é uma forma de renderizar um componente em qualquer lugar do DOM
@@ -94,7 +81,10 @@ const AddTaskModal = ({
             ref={nodeRef}
             className="fixed top-0 left-0 flex h-screen w-screen items-center justify-center backdrop-blur-xs"
           >
-            <div className="w-85 space-y-5 rounded-xl bg-white p-5 text-center shadow">
+            <form
+              onSubmit={handleSubmit(handleSave)}
+              className="w-85 space-y-5 rounded-xl bg-white p-5 text-center shadow"
+            >
               <div>
                 <h2 className="text-brand-dark-blue mb-1 text-xl font-semibold">
                   Nova tarefa
@@ -103,15 +93,18 @@ const AddTaskModal = ({
                   Insira as informações abaixo
                 </p>
               </div>
-              <form className="space-y-4">
+              <div className="space-y-4">
                 <Input
                   id="title"
                   label={"Título"}
                   placeholder="Título da tarefa"
-                  // value={title}
-                  // onChange={e => setTitle(e.target.value)}
-                  ref={titleRef}
-                  disabled={createIsLoading}
+                  disabled={isSubmitting}
+                  {...register("title", {
+                    required: "O Título é obrigatório.",
+                    validate: value =>
+                      !value.trim() ? "O Título não pode ser vazio." : true,
+                  })}
+                  error={errors?.title?.message}
                 />
                 <Select
                   id="time"
@@ -127,32 +120,43 @@ const AddTaskModal = ({
                     { value: "afternoon", label: "Tarde" },
                     { value: "evening", label: "Noite" },
                   ]}
-                  // value={time}
-                  // onChange={e => setTime(e.target.value)}
-                  ref={timeRef}
-                  disabled={createIsLoading}
+                  disabled={isSubmitting}
+                  {...register("time", {
+                    required: "O Horário é obrigatório.",
+                    validate: value =>
+                      !value.trim() ? "O Horário não pode ser vazio." : true,
+                  })}
+                  error={errors?.time?.message}
                 />
                 <Input
                   id="description"
                   label="Descrição"
                   placeholder="Descreva a tarefa"
-                  // value={description}
-                  // onChange={e => setDescription(e.target.value)}
-                  ref={descriptionRef}
-                  disabled={createIsLoading}
+                  disabled={isSubmitting}
+                  {...register("description", {
+                    required: "A Descrição é obrigatória.",
+                    validate: value =>
+                      !value.trim() ? "A Descrição não pode ser vazia." : true,
+                  })}
+                  error={errors?.description?.message}
                 />
-              </form>
+              </div>
               <div className="flex items-center justify-center gap-3">
-                <Button color="secondary" size="lg" onClick={handleClose}>
+                <Button
+                  type="button"
+                  color="secondary"
+                  size="lg"
+                  onClick={handleClose}
+                >
                   Cancelar
                 </Button>
                 <Button
+                  type="submit"
                   color="primary"
                   size="lg"
-                  onClick={handleSubmit}
-                  disabled={createIsLoading}
+                  disabled={isSubmitting}
                 >
-                  {createIsLoading ? (
+                  {isSubmitting ? (
                     <>
                       Salvando{" "}
                       <LoaderIcon className="text-brand-text-white animate-spin" />
@@ -162,7 +166,7 @@ const AddTaskModal = ({
                   )}
                 </Button>
               </div>
-            </div>
+            </form>
           </div>,
           document.body
         )}
