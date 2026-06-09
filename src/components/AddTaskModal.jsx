@@ -35,6 +35,11 @@ const AddTaskModal = ({
 
   const handleClose = () => {
     handleModalClose();
+    reset({
+      title: "",
+      time: "",
+      description: "",
+    });
   };
 
   const handleSave = async data => {
