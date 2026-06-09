@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -11,13 +12,18 @@ import Sidebar from "../components/Sidebar";
 
 const TaskDetailsPage = () => {
   const [task, setTask] = React.useState(null);
-  const [title, setTitle] = React.useState(null);
-  const [time, setTime] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
   const [deleteIsLoading, setDeleteIsLoading] = React.useState(false);
-  const [updateIsLoading, setUpdateIsLoading] = React.useState(false);
   const { taskId } = useParams();
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onChange",
+  });
 
   React.useEffect(() => {
     const fetchTask = async () => {
@@ -27,42 +33,28 @@ const TaskDetailsPage = () => {
       const data = await response.json();
 
       setTask(data);
-      setTitle(data.title);
-      setTime(data.time);
-      setDescription(data.description);
+      reset(data);
     };
 
     fetchTask();
-  }, [taskId]);
+  }, [taskId, reset]);
 
-  const handleSubmit = async () => {
-    setUpdateIsLoading(true);
-
-    if (!title.trim() || !time.trim() || !description.trim()) {
-      setUpdateIsLoading(false);
-      return toast.error("Preencha todos os campos.");
-    }
-
-    const task = {
-      title,
-      time,
-      description,
-    };
-
+  const handleSave = async data => {
     const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(task),
+      body: JSON.stringify({
+        title: data.title.trim(),
+        time: data.time.trim(),
+        description: data.description.trim(),
+      }),
     });
 
-    if (!response) {
-      setUpdateIsLoading(false);
+    if (!response)
       return toast.error("Erro ao atualizar tarefa. Tente novamente.");
-    }
 
-    setUpdateIsLoading(false);
     toast.success("Tarefa atualizada com sucesso.");
     navigate("/");
   };
@@ -84,9 +76,7 @@ const TaskDetailsPage = () => {
     navigate("/");
   };
 
-  if (!task) {
-    return <div>Tarefa não encontrada</div>;
-  }
+  if (!task) return <div>Tarefa não encontrada</div>;
 
   return (
     <div className="flex">
@@ -136,20 +126,26 @@ const TaskDetailsPage = () => {
           </Button>
         </div>
         <div>
-          <form>
+          <form onSubmit={handleSubmit(handleSave)}>
             <div className="bg-brand-white space-y-6 rounded-xl p-6">
               <Input
                 id="name"
                 label={"Nome"}
-                defaultValue={title}
-                onChange={e => setTitle(e.target.value)}
-                disabled={updateIsLoading}
+                disabled={isSubmitting}
+                {...register("title", {
+                  required: "O Nome é obrigatório.",
+                  validate: value => {
+                    if (!value.trim()) return "O Nome não pode ser vazio.";
+
+                    return true;
+                  },
+                })}
+                error={errors?.title?.message}
               />
 
               <Select
                 id="time"
                 label={"Horário"}
-                defaultValue={time}
                 options={[
                   {
                     value: "",
@@ -160,27 +156,37 @@ const TaskDetailsPage = () => {
                   { value: "afternoon", label: "Tarde" },
                   { value: "evening", label: "Noite" },
                 ]}
-                onChange={e => setTime(e.target.value)}
-                disabled={updateIsLoading}
+                disabled={isSubmitting}
+                {...register("time", {
+                  required: "O Horário é obrigatório.",
+                })}
+                error={errors?.time?.message}
               />
 
               <Input
                 id="description"
                 label={"Descrição"}
-                defaultValue={description}
-                onChange={e => setDescription(e.target.value)}
-                disabled={updateIsLoading}
+                disabled={isSubmitting}
+                {...register("description", {
+                  required: "A Descrição é obrigatória.",
+                  validate: value => {
+                    if (!value.trim()) return "A Descrição não pode ser vazia.";
+
+                    return true;
+                  },
+                })}
+                error={errors?.description?.message}
               />
             </div>
 
             <div className="mt-9 flex items-center justify-end gap-3">
               <Button
+                type="submit"
                 color="primary"
                 size="lg"
-                onClick={handleSubmit}
-                disabled={updateIsLoading}
+                disabled={isSubmitting}
               >
-                {updateIsLoading ? (
+                {isSubmitting ? (
                   <>
                     Salvando{" "}
                     <LoaderIcon className="text-brand-text-white animate-spin" />

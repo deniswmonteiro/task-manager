@@ -1,6 +1,6 @@
 import Label from "./Label";
 
-const Input = ({ label, id, ref, ...props }) => {
+const Input = ({ label, id, ref, error, ...props }) => {
   return (
     <div className="flex flex-col items-start gap-1">
       <Label htmlFor={id}>{label}</Label>
@@ -11,6 +11,7 @@ const Input = ({ label, id, ref, ...props }) => {
         ref={ref}
         {...props}
       />
+      {error ? <span className="text-xs text-red-500">{error}</span> : null}
     </div>
   );
 };
