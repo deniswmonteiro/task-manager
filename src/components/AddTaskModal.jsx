@@ -1,5 +1,6 @@
 import "./AddTaskModal.css";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -12,11 +13,33 @@ import Button from "./Button";
 import Input from "./form/Input";
 import Select from "./form/Select";
 
-const AddTaskModal = ({
-  modalIsOpen,
-  handleModalClose,
-  handleAddTaskSubmit,
-}) => {
+const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationKey: "addTask",
+    mutationFn: async task => {
+      try {
+        const response = await fetch("http://localhost:3000/tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(task),
+        });
+
+        if (!response.ok) throw new Error("Erro ao criar tarefa.");
+
+        const result = await response.json();
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    retry: false,
+  });
+
   const {
     register,
     handleSubmit,
@@ -51,22 +74,24 @@ const AddTaskModal = ({
       status: "not_started",
     };
 
-    const response = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    mutate(task, {
+      onSuccess: newTask => {
+        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
+          return [...tasksCache, newTask];
+        });
+
+        handleClose();
+        reset({
+          title: "",
+          time: "",
+          description: "",
+        });
+
+        toast.success("Tarefa adicionada com sucesso.");
       },
-      body: JSON.stringify(task),
-    });
-
-    if (!response) return toast.error("Erro ao criar tarefa. Tente novamente.");
-
-    handleAddTaskSubmit(task);
-    handleClose();
-    reset({
-      title: "",
-      time: "",
-      description: "",
+      onError: () => {
+        toast.error("Erro ao criar tarefa. Tente novamente.");
+      },
     });
   };
 

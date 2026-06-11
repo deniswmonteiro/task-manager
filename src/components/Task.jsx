@@ -16,7 +16,7 @@ const Task = ({
         </div>
       </div>
       <ul className="space-y-3">
-        {tasks.length === 0 ? (
+        {tasks && tasks.length === 0 ? (
           <p className="text-brand-text-gray text-center text-xs">
             Nenhuma tarefa cadastrada
           </p>

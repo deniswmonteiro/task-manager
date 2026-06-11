@@ -36,25 +36,10 @@
       "status": "not_started"
     },
     {
-      "id": "6",
+      "id": "X99FLzLZbos",
       "title": "Meditar",
-      "description": "Meditar por 30 minutos.",
       "time": "evening",
-      "status": "not_started"
-    },
-    {
-      "id": "iydIptPzxEM",
-      "status": "not_started"
-    },
-    {
-      "id": "97qL10xlH9g",
-      "status": "not_started"
-    },
-    {
-      "id": "JrVbUaGQ19o",
-      "title": "Teste",
-      "time": "afternoon",
-      "description": "teste",
+      "description": "Meditar por 30 minutos",
       "status": "not_started"
     }
   ],

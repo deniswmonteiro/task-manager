@@ -1,4 +1,4 @@
-import React from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -11,16 +11,14 @@ import Select from "../components/form/Select";
 import Sidebar from "../components/Sidebar";
 
 const TaskDetailsPage = () => {
-  const [task, setTask] = React.useState(null);
-  const [deleteIsLoading, setDeleteIsLoading] = React.useState(false);
-  const { taskId } = useParams();
   const navigate = useNavigate();
+  const { taskId } = useParams();
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -30,55 +28,111 @@ const TaskDetailsPage = () => {
     },
   });
 
-  React.useEffect(() => {
-    const fetchTask = async () => {
-      const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-        method: "GET",
-      });
-      const data = await response.json();
+  const queryClient = useQueryClient();
 
-      setTask(data);
-      reset(data);
-    };
+  const { data: task } = useQuery({
+    queryKey: ["task", taskId],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${taskId}`);
 
-    fetchTask();
-  }, [taskId, reset]);
+        if (!response.ok) throw new Error("Erro ao buscar tarefa.");
+
+        const result = await response.json();
+
+        reset(result);
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    retry: false,
+  });
+
+  const { mutate: mutateUpdate, isPending: isUpdatePending } = useMutation({
+    mutationKey: ["updateTask", taskId],
+    mutationFn: async task => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(task),
+        });
+
+        if (!response.ok) throw new Error("Erro ao atualizar a tarefa.");
+
+        const result = await response.json();
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    retry: false,
+  });
+
+  const { mutate: mutateDelete, isPending: isDeletePending } = useMutation({
+    mutationKey: ["deleteTask", taskId],
+    mutationFn: async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) throw new Error("Erro ao excluir tarefa.");
+
+        const result = await response.json();
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    retry: false,
+  });
 
   const handleSave = async data => {
-    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+    const task = {
+      title: data.title.trim(),
+      time: data.time.trim(),
+      description: data.description.trim(),
+    };
+
+    mutateUpdate(task, {
+      onSuccess: updateTask => {
+        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
+          return tasksCache.map(task =>
+            task.id === updateTask.id ? updateTask : task
+          );
+        });
+        toast.success("Tarefa atualizada com sucesso.");
+        navigate("/");
       },
-      body: JSON.stringify({
-        title: data.title.trim(),
-        time: data.time.trim(),
-        description: data.description.trim(),
-      }),
+      onError: () => {
+        toast.error("Erro ao atualizar a tarefa. Tente novamente.");
+      },
     });
-
-    if (!response)
-      return toast.error("Erro ao atualizar tarefa. Tente novamente.");
-
-    toast.success("Tarefa atualizada com sucesso.");
-    navigate("/");
   };
 
   const handleDelete = async () => {
-    setDeleteIsLoading(true);
-
-    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-      method: "DELETE",
+    mutateDelete(undefined, {
+      onSuccess: deletedTask => {
+        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
+          return tasksCache.filter(task => task.id !== deletedTask.id);
+        });
+        toast.success("Tarefa excluída com sucesso.");
+        navigate("/");
+      },
+      onError: () => {
+        toast.error("Erro ao excluir tarefa. Tente novamente.");
+      },
     });
-
-    if (!response) {
-      setDeleteIsLoading(false);
-      return toast.error("Erro ao excluir tarefa. Tente novamente.");
-    }
-
-    setDeleteIsLoading(false);
-    toast.success("Tarefa excluída com sucesso.");
-    navigate("/");
   };
 
   if (!task) return <div>Tarefa não encontrada</div>;
@@ -115,9 +169,9 @@ const TaskDetailsPage = () => {
           <Button
             color="danger"
             onClick={handleDelete}
-            disabled={deleteIsLoading}
+            disabled={isDeletePending}
           >
-            {deleteIsLoading ? (
+            {isDeletePending ? (
               <>
                 <LoaderIcon className="text-brand-text-white animate-spin" />{" "}
                 Deletando
@@ -136,7 +190,7 @@ const TaskDetailsPage = () => {
               <Input
                 id="title"
                 label={"Título"}
-                disabled={isSubmitting}
+                disabled={isUpdatePending}
                 {...register("title", {
                   required: "O Título é obrigatório.",
                   validate: value =>
@@ -158,7 +212,7 @@ const TaskDetailsPage = () => {
                   { value: "afternoon", label: "Tarde" },
                   { value: "evening", label: "Noite" },
                 ]}
-                disabled={isSubmitting}
+                disabled={isUpdatePending}
                 {...register("time", {
                   required: "O Horário é obrigatório.",
                   validate: value =>
@@ -170,7 +224,7 @@ const TaskDetailsPage = () => {
               <Input
                 id="description"
                 label={"Descrição"}
-                disabled={isSubmitting}
+                disabled={isUpdatePending}
                 {...register("description", {
                   required: "A Descrição é obrigatória.",
                   validate: value =>
@@ -185,9 +239,9 @@ const TaskDetailsPage = () => {
                 type="submit"
                 color="primary"
                 size="lg"
-                disabled={isSubmitting}
+                disabled={isUpdatePending || isDeletePending}
               >
-                {isSubmitting ? (
+                {isUpdatePending ? (
                   <>
                     Salvando{" "}
                     <LoaderIcon className="text-brand-text-white animate-spin" />

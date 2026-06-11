@@ -1,3 +1,4 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
@@ -14,35 +15,32 @@ import Button from "./Button";
 import Task from "./Task";
 
 const Tasks = () => {
-  const [tasks, setTasks] = React.useState([]);
-  const [tasksIsLoading, setTasksIsLoading] = React.useState(true);
+  const queryClient = useQueryClient();
+  const { data: tasks = [], isLoading } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: async () => {
+      try {
+        const response = await fetch("http://localhost:3000/tasks");
+
+        if (!response.ok) throw new Error("Erro ao carregar tarefas.");
+
+        const result = await response.json();
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        toast.error("Erro ao carregar tarefas. Tente novamente.");
+        return [];
+      }
+    },
+    retry: false,
+  });
+
   const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
 
   const morningTasks = tasks.filter(task => task.time === "morning");
   const afternoonTasks = tasks.filter(task => task.time === "afternoon");
   const eveningTasks = tasks.filter(task => task.time === "evening");
-
-  React.useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/tasks");
-
-        if (!response.ok) {
-          throw new Error();
-        }
-
-        const result = await response.json();
-
-        setTasks(result);
-      } catch {
-        toast.error("Erro ao carregar tarefas. Tente novamente.");
-      } finally {
-        setTasksIsLoading(false);
-      }
-    };
-
-    fetchTasks();
-  }, []);
 
   const handleTaskChkChange = taskId => {
     const newTask = tasks.map(task => {
@@ -66,20 +64,7 @@ const Tasks = () => {
       return task;
     });
 
-    setTasks(newTask);
-  };
-
-  const handleAddTaskSubmit = task => {
-    setTasks([...tasks, task]);
-
-    toast.success("Tarefa adicionada com sucesso.");
-  };
-
-  const onDeleteTaskSuccess = taskId => {
-    const newTask = tasks.filter(task => task.id !== taskId);
-
-    setTasks(newTask);
-    toast.success("Tarefa excluída com sucesso.");
+    queryClient.setQueryData(["tasks"], newTask);
   };
 
   return (
@@ -106,7 +91,7 @@ const Tasks = () => {
 
       {/* Lista de tarefas */}
       <section className="mt-6 grid gap-6 rounded-xl">
-        {tasksIsLoading ? (
+        {isLoading ? (
           <div className="bg-brand-white text-brand-primary flex items-center justify-center gap-2 rounded-lg p-6 text-sm">
             Carregando tarefas
             <LoaderIcon className="animate-spin" />
@@ -118,21 +103,18 @@ const Tasks = () => {
               title="Manhã"
               tasks={morningTasks}
               handleTaskChkChange={handleTaskChkChange}
-              onDeleteTaskSuccess={onDeleteTaskSuccess}
             />
             <Task
               icon={<CloudSunIcon />}
               title="Tarde"
               tasks={afternoonTasks}
               handleTaskChkChange={handleTaskChkChange}
-              onDeleteTaskSuccess={onDeleteTaskSuccess}
             />
             <Task
               icon={<MoonIcon />}
               title="Noite"
               tasks={eveningTasks}
               handleTaskChkChange={handleTaskChkChange}
-              onDeleteTaskSuccess={onDeleteTaskSuccess}
             />
           </>
         )}
@@ -141,7 +123,6 @@ const Tasks = () => {
       <AddTaskModal
         modalIsOpen={addTaskModalIsOpen}
         handleModalClose={() => setAddTaskModalIsOpen(false)}
-        handleAddTaskSubmit={handleAddTaskSubmit}
       />
     </main>
   );

@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -7,14 +8,28 @@ import { DetailsIcon, LoaderIcon, TrashIcon } from "../assets/icons";
 import Button from "./Button";
 import Checkbox from "./form/Checkbox";
 
-const TaskItem = ({
-  id,
-  title,
-  status,
-  handleTaskChkChange,
-  onDeleteTaskSuccess,
-}) => {
-  const [deleteIsLoading, setDeleteIsLoading] = React.useState(false);
+const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["deleteTask", id],
+    mutationFn: async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) throw new Error("Erro ao excluir a tarefa.");
+
+        const result = await response.json();
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    retry: false,
+  });
 
   const backgroundColor = tv({
     base: "flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm duration-300",
@@ -31,20 +46,17 @@ const TaskItem = ({
   });
 
   const handleDeleteClick = async () => {
-    setDeleteIsLoading(true);
-
-    const response = await fetch(`http://localhost:3000/tasks/${id}`, {
-      method: "DELETE",
+    mutate(undefined, {
+      onSuccess: () => {
+        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
+          return tasksCache.filter(task => task.id !== id);
+        });
+        toast.success("Tarefa excluída com sucesso.");
+      },
+      onError: () => {
+        toast.error("Erro ao excluir tarefa. Tente novamente.");
+      },
     });
-
-    if (!response.ok) {
-      setDeleteIsLoading(false);
-
-      return toast.error("Erro ao excluir tarefa. Tente novamente.");
-    }
-
-    setDeleteIsLoading(false);
-    onDeleteTaskSuccess(id);
   };
 
   return (
@@ -61,9 +73,9 @@ const TaskItem = ({
         <Button
           color="ghost"
           onClick={() => handleDeleteClick(id)}
-          disabled={deleteIsLoading}
+          disabled={isPending}
         >
-          {deleteIsLoading ? (
+          {isPending ? (
             <LoaderIcon className="text-brand-text-gray animate-spin" />
           ) : (
             <TrashIcon />
