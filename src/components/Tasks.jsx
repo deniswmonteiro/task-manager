@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
@@ -10,31 +10,14 @@ import {
   SunIcon,
   TrashIcon,
 } from "../assets/icons";
+import { useGetTasks } from "../hooks/data/useGetTasks";
 import AddTaskModal from "./AddTaskModal";
 import Button from "./Button";
 import Task from "./Task";
 
 const Tasks = () => {
   const queryClient = useQueryClient();
-  const { data: tasks = [], isLoading } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: async () => {
-      try {
-        const response = await fetch("http://localhost:3000/tasks");
-
-        if (!response.ok) throw new Error("Erro ao carregar tarefas.");
-
-        const result = await response.json();
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        toast.error("Erro ao carregar tarefas. Tente novamente.");
-        return [];
-      }
-    },
-    retry: false,
-  });
+  const { data: tasks = [], isLoading } = useGetTasks();
 
   const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
 

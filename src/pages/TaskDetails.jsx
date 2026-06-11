@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -9,6 +8,9 @@ import Button from "../components/Button";
 import Input from "../components/form/Input";
 import Select from "../components/form/Select";
 import Sidebar from "../components/Sidebar";
+import { useDeleteTask } from "../hooks/data/useDeleteTask";
+import { useGetTask } from "../hooks/data/useGetTask";
+import { useUpdateTask } from "../hooks/data/useUpdateTask";
 
 const TaskDetailsPage = () => {
   const navigate = useNavigate();
@@ -28,74 +30,11 @@ const TaskDetailsPage = () => {
     },
   });
 
-  const queryClient = useQueryClient();
-
-  const { data: task } = useQuery({
-    queryKey: ["task", taskId],
-    queryFn: async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/tasks/${taskId}`);
-
-        if (!response.ok) throw new Error("Erro ao buscar tarefa.");
-
-        const result = await response.json();
-
-        reset(result);
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    retry: false,
-  });
-
-  const { mutate: mutateUpdate, isPending: isUpdatePending } = useMutation({
-    mutationKey: ["updateTask", taskId],
-    mutationFn: async task => {
-      try {
-        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
-
-        if (!response.ok) throw new Error("Erro ao atualizar a tarefa.");
-
-        const result = await response.json();
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    retry: false,
-  });
-
-  const { mutate: mutateDelete, isPending: isDeletePending } = useMutation({
-    mutationKey: ["deleteTask", taskId],
-    mutationFn: async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-          method: "DELETE",
-        });
-
-        if (!response.ok) throw new Error("Erro ao excluir tarefa.");
-
-        const result = await response.json();
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    retry: false,
-  });
+  const { data: task } = useGetTask(taskId, reset);
+  const { mutate: mutateUpdate, isPending: isUpdatePending } =
+    useUpdateTask(taskId);
+  const { mutate: mutateDelete, isPending: isDeletePending } =
+    useDeleteTask(taskId);
 
   const handleSave = async data => {
     const task = {
@@ -105,12 +44,7 @@ const TaskDetailsPage = () => {
     };
 
     mutateUpdate(task, {
-      onSuccess: updateTask => {
-        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
-          return tasksCache.map(task =>
-            task.id === updateTask.id ? updateTask : task
-          );
-        });
+      onSuccess: () => {
         toast.success("Tarefa atualizada com sucesso.");
         navigate("/");
       },
@@ -122,10 +56,7 @@ const TaskDetailsPage = () => {
 
   const handleDelete = async () => {
     mutateDelete(undefined, {
-      onSuccess: deletedTask => {
-        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
-          return tasksCache.filter(task => task.id !== deletedTask.id);
-        });
+      onSuccess: () => {
         toast.success("Tarefa excluída com sucesso.");
         navigate("/");
       },

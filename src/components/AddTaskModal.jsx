@@ -1,6 +1,5 @@
 import "./AddTaskModal.css";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -9,36 +8,13 @@ import { toast } from "sonner";
 import { v4 } from "uuid";
 
 import { LoaderIcon } from "../assets/icons";
+import { useAddTask } from "../hooks/data/useAddTask";
 import Button from "./Button";
 import Input from "./form/Input";
 import Select from "./form/Select";
 
 const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationKey: "addTask",
-    mutationFn: async task => {
-      try {
-        const response = await fetch("http://localhost:3000/tasks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
-
-        if (!response.ok) throw new Error("Erro ao criar tarefa.");
-
-        const result = await response.json();
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    retry: false,
-  });
+  const { mutate: mutateAddTask } = useAddTask();
 
   const {
     register,
@@ -74,12 +50,8 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
       status: "not_started",
     };
 
-    mutate(task, {
-      onSuccess: newTask => {
-        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
-          return [...tasksCache, newTask];
-        });
-
+    mutateAddTask(task, {
+      onSuccess: () => {
         handleClose();
         reset({
           title: "",

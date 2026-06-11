@@ -1,35 +1,15 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { tv } from "tailwind-variants";
 
 import { DetailsIcon, LoaderIcon, TrashIcon } from "../assets/icons";
+import { useDeleteTask } from "../hooks/data/useDeleteTask";
 import Button from "./Button";
 import Checkbox from "./form/Checkbox";
 
 const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
-  const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["deleteTask", id],
-    mutationFn: async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
-          method: "DELETE",
-        });
-
-        if (!response.ok) throw new Error("Erro ao excluir a tarefa.");
-
-        const result = await response.json();
-
-        return result;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    retry: false,
-  });
+  const { mutate: mutateDeleteTask, isPending: deleteIsPending } =
+    useDeleteTask(id);
 
   const backgroundColor = tv({
     base: "flex items-center justify-between gap-2 rounded-lg px-4 py-3 text-sm duration-300",
@@ -46,11 +26,8 @@ const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
   });
 
   const handleDeleteClick = async () => {
-    mutate(undefined, {
+    mutateDeleteTask(undefined, {
       onSuccess: () => {
-        queryClient.setQueryData(["tasks"], (tasksCache = []) => {
-          return tasksCache.filter(task => task.id !== id);
-        });
         toast.success("Tarefa excluída com sucesso.");
       },
       onError: () => {
@@ -72,10 +49,10 @@ const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
       <p className="text-brand-dark-blue/70 flex items-center gap-3 duration-300">
         <Button
           color="ghost"
-          onClick={() => handleDeleteClick(id)}
-          disabled={isPending}
+          onClick={handleDeleteClick}
+          disabled={deleteIsPending}
         >
-          {isPending ? (
+          {deleteIsPending ? (
             <LoaderIcon className="text-brand-text-gray animate-spin" />
           ) : (
             <TrashIcon />

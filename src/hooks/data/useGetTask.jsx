@@ -1,0 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
+
+export const useGetTask = (taskId, reset) => {
+  return useQuery({
+    queryKey: ["task", taskId],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${taskId}`);
+
+        if (!response.ok) throw new Error("Erro ao buscar tarefa.");
+
+        const result = await response.json();
+
+        reset(result);
+
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    retry: false,
+  });
+};

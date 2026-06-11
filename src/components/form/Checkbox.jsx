@@ -13,7 +13,7 @@ const Checkbox = ({ id, status, handleTaskChkChange }) => {
       },
     },
     defaultVariants: {
-      status: "not_stated",
+      status: "not_started",
     },
   });
 
