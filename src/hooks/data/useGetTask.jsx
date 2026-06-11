@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetTask = (taskId, reset) => {
+export const useGetTask = ({ taskId, onSuccess }) => {
   return useQuery({
     queryKey: ["task", taskId],
     queryFn: async () => {
@@ -9,11 +9,11 @@ export const useGetTask = (taskId, reset) => {
 
         if (!response.ok) throw new Error("Erro ao buscar tarefa.");
 
-        const result = await response.json();
+        const task = await response.json();
 
-        reset(result);
+        onSuccess(task);
 
-        return result;
+        return task;
       } catch (error) {
         console.error(error);
         throw error;

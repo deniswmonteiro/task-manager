@@ -30,7 +30,7 @@ const TaskDetailsPage = () => {
     },
   });
 
-  const { data: task } = useGetTask(taskId, reset);
+  const { data: task } = useGetTask({ taskId, onSuccess: reset });
   const { mutate: mutateUpdate, isPending: isUpdatePending } =
     useUpdateTask(taskId);
   const { mutate: mutateDelete, isPending: isDeletePending } =
