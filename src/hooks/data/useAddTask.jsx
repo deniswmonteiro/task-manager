@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 export const useAddTask = () => {
   const queryClient = useQueryClient();
@@ -8,17 +9,10 @@ export const useAddTask = () => {
     // Envia a nova tarefa para a API
     mutationFn: async task => {
       try {
-        const response = await fetch("http://localhost:3000/tasks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
-
-        if (!response.ok) throw new Error("Erro ao criar tarefa.");
-
-        const newTask = await response.json();
+        const { data: newTask } = await axios.post(
+          "http://localhost:3000/tasks",
+          task
+        );
 
         return newTask;
       } catch (error) {

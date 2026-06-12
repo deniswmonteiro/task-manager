@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { toast } from "sonner";
 
 export const useGetTasks = () => {
@@ -7,13 +8,9 @@ export const useGetTasks = () => {
     // Busca a lista completa de tarefas
     queryFn: async () => {
       try {
-        const response = await fetch("http://localhost:3000/tasks");
+        const { data: tasks } = await axios("http://localhost:3000/tasks");
 
-        if (!response.ok) throw new Error("Erro ao carregar tarefas.");
-
-        const result = await response.json();
-
-        return result;
+        return tasks;
       } catch (error) {
         console.error(error);
         toast.error("Erro ao carregar tarefas. Tente novamente.");

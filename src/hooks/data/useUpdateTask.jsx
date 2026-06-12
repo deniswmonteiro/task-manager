@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 export const useUpdateTask = taskId => {
   const queryClient = useQueryClient();
@@ -8,17 +9,10 @@ export const useUpdateTask = taskId => {
     // Atualiza os dados de uma tarefa a partir do seu id
     mutationFn: async task => {
       try {
-        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
-
-        if (!response.ok) throw new Error("Erro ao atualizar a tarefa.");
-
-        const updatedTask = await response.json();
+        const { data: updatedTask } = await axios.patch(
+          `http://localhost:3000/tasks/${taskId}`,
+          task
+        );
 
         return updatedTask;
       } catch (error) {
