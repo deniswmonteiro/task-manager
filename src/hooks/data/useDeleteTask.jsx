@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+
+import { api } from "../../lib/axios";
 
 export const useDeleteTask = taskId => {
   const queryClient = useQueryClient();
@@ -9,9 +10,7 @@ export const useDeleteTask = taskId => {
     // Remove a tarefa no servidor usando o id recebido pelo hook
     mutationFn: async () => {
       try {
-        const { data: deletedTask } = await axios.delete(
-          `http://localhost:3000/tasks/${taskId}`
-        );
+        const { data: deletedTask } = await api.delete(`/tasks/${taskId}`);
 
         return deletedTask;
       } catch (error) {

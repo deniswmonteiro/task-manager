@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { toast } from "sonner";
+
+import { api } from "../../lib/axios";
 
 export const useGetTasks = () => {
   return useQuery({
@@ -8,7 +9,7 @@ export const useGetTasks = () => {
     // Busca a lista completa de tarefas
     queryFn: async () => {
       try {
-        const { data: tasks } = await axios("http://localhost:3000/tasks");
+        const { data: tasks } = await api.get("/tasks");
 
         return tasks;
       } catch (error) {

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
+import { api } from "../../lib/axios";
 
 export const useGetTask = ({ taskId, onSuccess }) => {
   return useQuery({
@@ -7,9 +8,7 @@ export const useGetTask = ({ taskId, onSuccess }) => {
     // Busca uma tarefa específica e sincroniza o formulário com o resultado
     queryFn: async () => {
       try {
-        const { data: task } = await axios.get(
-          `http://localhost:3000/tasks/${taskId}`
-        );
+        const { data: task } = await api.get(`/tasks/${taskId}`);
 
         onSuccess(task);
 
