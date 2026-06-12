@@ -11,6 +11,7 @@ import SunIcon from "./sun.svg?react";
 import TasksIcon from "./tasks.svg?react";
 import TrashIcon from "./trash.svg?react";
 
+// Barrel dos ícones SVG para simplificar os imports nos componentes.
 export {
   AddIcon,
   ArrowIcon,

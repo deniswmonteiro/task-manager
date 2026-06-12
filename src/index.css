@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @layer base {
+  /* Registra todos os pesos da fonte usados pelo tema da aplicação */
   @font-face {
     font-family: "Poppins";
     src: url("/src/assets/fonts/Poppins-Black.ttf") format("truetype");
@@ -129,15 +130,16 @@
   }
 
   body {
+    /* Aplica a base visual compartilhada por todas as telas */
     @apply bg-brand-background text-brand-dark-blue overflow-hidden;
   }
 }
 
 @theme {
-  /** Fonts */
+  /** Fonte padrão exposta como classe utilitária do Tailwind */
   --font-sans: "Poppins", sans-serif;
 
-  /** Colors */
+  /** Paleta da marca usada pelos componentes */
   --color-brand-dark-blue: #35383e;
   --color-brand-primary: #00adb5;
   --color-brand-dark-gray: #818181;

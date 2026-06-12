@@ -33,6 +33,7 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
   const nodeRef = React.useRef(null);
 
   const handleClose = () => {
+    // Fecha o modal e limpa o formulário para a próxima abertura
     handleModalClose();
     reset({
       title: "",
@@ -42,6 +43,7 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
   };
 
   const handleSave = async data => {
+    // Novas tarefas sempre começam no primeiro estado do fluxo
     const task = {
       id: v4(),
       title: data.title.trim(),
@@ -67,8 +69,7 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
     });
   };
 
-  // createPortal - é uma forma de renderizar um componente em qualquer lugar do DOM
-  // CSSTransition - é uma forma de adicionar transições CSS ao componente
+  // CSSTransition controla as classes de entrada/saída definidas no CSS
   return (
     <CSSTransition
       nodeRef={nodeRef}
@@ -79,6 +80,7 @@ const AddTaskModal = ({ modalIsOpen, handleModalClose }) => {
     >
       <div>
         {createPortal(
+          // Portal renderiza o modal fora da hierarquia visual do componente pai
           <div
             ref={nodeRef}
             className="fixed top-0 left-0 flex h-screen w-screen items-center justify-center backdrop-blur-xs"

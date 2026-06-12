@@ -1,6 +1,7 @@
 import { tv } from "tailwind-variants";
 
 const Button = ({ children, color, size, ...props }) => {
+  // Centraliza as variações de botão para manter o mesmo padrão visual
   const button = tv({
     base: "flex cursor-pointer items-center justify-center gap-1 rounded-md px-2 font-semibold duration-300 hover:transition-all hover:duration-300",
     variants: {

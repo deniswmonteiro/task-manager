@@ -5,6 +5,7 @@ export const useAddTask = () => {
 
   return useMutation({
     mutationKey: "addTask",
+    // Envia a nova tarefa para a API
     mutationFn: async task => {
       try {
         const response = await fetch("http://localhost:3000/tasks", {
@@ -26,6 +27,7 @@ export const useAddTask = () => {
       }
     },
     onSuccess: newTask => {
+      // Mantém a lista atualizada no cache sem precisar buscar todas as tarefas de novo
       queryClient.setQueryData(["tasks"], (tasksCache = []) => {
         return [...tasksCache, newTask];
       });

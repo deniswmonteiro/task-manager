@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 
@@ -11,43 +10,47 @@ import {
   TrashIcon,
 } from "../assets/icons";
 import { useGetTasks } from "../hooks/data/useGetTasks";
+import { useUpdateTaskStatus } from "../hooks/data/useUpdateTaskStatus";
 import AddTaskModal from "./AddTaskModal";
 import Button from "./Button";
 import Task from "./Task";
 
 const Tasks = () => {
-  const queryClient = useQueryClient();
   const { data: tasks = [], isLoading } = useGetTasks();
 
   const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
+  const { mutate: mutateUpdateTaskStatus } = useUpdateTaskStatus();
 
+  // A tela exibe a mesma lista separada por período do dia
   const morningTasks = tasks.filter(task => task.time === "morning");
   const afternoonTasks = tasks.filter(task => task.time === "afternoon");
   const eveningTasks = tasks.filter(task => task.time === "evening");
 
   const handleTaskChkChange = taskId => {
-    const newTask = tasks.map(task => {
-      if (task.id !== taskId) return task;
+    const task = tasks.find(task => task.id === taskId);
 
-      if (task.status === "not_started") {
-        toast.success("Tarefa iniciada com sucesso.");
-        return { ...task, status: "in_progress" };
-      }
+    if (!task) return;
 
-      if (task.status === "in_progress") {
-        toast.success("Tarefa concluída com sucesso.");
-        return { ...task, status: "done" };
-      }
+    let status = "not_started";
 
-      if (task.status === "done") {
-        toast.success("Tarefa reiniciada com sucesso.");
-        return { ...task, status: "not_started" };
-      }
+    // Ciclo de status: não iniciada -> em progresso -> concluída -> não iniciada
+    if (task.status === "not_started") {
+      status = "in_progress";
+      toast.success("Tarefa iniciada com sucesso.");
+    }
 
-      return task;
-    });
+    if (task.status === "in_progress") {
+      status = "done";
+      toast.success("Tarefa concluída com sucesso.");
+    }
 
-    queryClient.setQueryData(["tasks"], newTask);
+    if (task.status === "done") {
+      status = "not_started";
+      toast.success("Tarefa reiniciada com sucesso.");
+    }
+
+    // O hook aplica atualização otimista para refletir a mudança em tempo real
+    mutateUpdateTaskStatus({ ...task, status });
   };
 
   return (

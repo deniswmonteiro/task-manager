@@ -1,3 +1,4 @@
+/* Classes acionadas pelo CSSTransition para animar o overlay do modal */
 .add-task-modal-enter {
   opacity: 0;
 }

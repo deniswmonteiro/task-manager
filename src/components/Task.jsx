@@ -16,6 +16,7 @@ const Task = ({
         </div>
       </div>
       <ul className="space-y-3">
+        {/* Mantém o grupo visível mesmo quando não há tarefas naquele período. */}
         {tasks && tasks.length === 0 ? (
           <p className="text-brand-text-gray text-center text-xs">
             Nenhuma tarefa cadastrada

@@ -5,6 +5,7 @@ export const useDeleteTask = taskId => {
 
   return useMutation({
     mutationKey: ["deleteTask", taskId],
+    // Remove a tarefa no servidor usando o id recebido pelo hook
     mutationFn: async () => {
       try {
         const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
@@ -22,6 +23,7 @@ export const useDeleteTask = taskId => {
       }
     },
     onSuccess: deletedTask => {
+      // Remove do cache a mesma tarefa apagada no servidor
       queryClient.setQueryData(["tasks"], (tasksCache = []) => {
         return tasksCache.filter(task => task.id !== deletedTask.id);
       });

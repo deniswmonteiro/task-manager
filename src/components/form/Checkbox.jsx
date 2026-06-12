@@ -3,6 +3,7 @@ import { tv } from "tailwind-variants";
 import { CheckIcon, LoaderIcon } from "../../assets/icons";
 
 const Checkbox = ({ id, status, handleTaskChkChange }) => {
+  // O visual do checkbox representa o status atual da tarefa
   const backgroundColor = tv({
     base: "relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg duration-300 hover:scale-105 hover:duration-300",
     variants: {
@@ -25,6 +26,7 @@ const Checkbox = ({ id, status, handleTaskChkChange }) => {
         className="absolute h-full w-full cursor-pointer opacity-0"
         onChange={() => handleTaskChkChange(id)}
       />
+      {/* O input real fica invisível; o ícone mostra o estado para o usuário */}
       {status === "done" && <CheckIcon />}
       {status === "in_progress" && <LoaderIcon className="animate-spin" />}
     </label>

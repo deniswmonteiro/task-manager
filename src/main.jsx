@@ -9,8 +9,10 @@ import { Toaster } from "sonner";
 import App from "./App.jsx";
 import TaskDetailsPage from "./pages/TaskDetails.jsx";
 
+// Cliente único do React Query usado para compartilhar cache entre telas
 const queryClient = new QueryClient();
 
+// Rotas principais da aplicação: lista de tarefas e tela de detalhes
 const router = createBrowserRouter([
   {
     path: "/",

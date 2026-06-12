@@ -16,6 +16,7 @@ const TaskDetailsPage = () => {
   const navigate = useNavigate();
   const { taskId } = useParams();
 
+  // O reset será usado para preencher o formulário depois que a tarefa carregar.
   const {
     register,
     handleSubmit,
@@ -37,6 +38,7 @@ const TaskDetailsPage = () => {
     useDeleteTask(taskId);
 
   const handleSave = async data => {
+    // Remove espaços extras antes de enviar os campos editáveis
     const task = {
       title: data.title.trim(),
       time: data.time.trim(),
@@ -55,6 +57,7 @@ const TaskDetailsPage = () => {
   };
 
   const handleDelete = async () => {
+    // A exclusão volta para a lista para evitar permanecer em uma rota inválida
     mutateDelete(undefined, {
       onSuccess: () => {
         toast.success("Tarefa excluída com sucesso.");

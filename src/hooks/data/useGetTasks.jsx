@@ -4,6 +4,7 @@ import { toast } from "sonner";
 export const useGetTasks = () => {
   return useQuery({
     queryKey: ["tasks"],
+    // Busca a lista completa de tarefas
     queryFn: async () => {
       try {
         const response = await fetch("http://localhost:3000/tasks");

@@ -5,6 +5,7 @@ export const useUpdateTask = taskId => {
 
   return useMutation({
     mutationKey: ["updateTask", taskId],
+    // Atualiza os dados de uma tarefa a partir do seu id
     mutationFn: async task => {
       try {
         const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
@@ -26,6 +27,7 @@ export const useUpdateTask = taskId => {
       }
     },
     onSuccess: updatedTask => {
+      // Substitui no cache apenas a tarefa retornada pela API
       queryClient.setQueryData(["tasks"], (tasksCache = []) => {
         return tasksCache.map(task =>
           task.id === updatedTask.id ? updatedTask : task

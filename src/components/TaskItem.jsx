@@ -26,6 +26,7 @@ const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
   });
 
   const handleDeleteClick = async () => {
+    // A remoção do item também atualiza o cache no hook useDeleteTask
     mutateDeleteTask(undefined, {
       onSuccess: () => {
         toast.success("Tarefa excluída com sucesso.");

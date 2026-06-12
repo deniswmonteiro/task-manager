@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useGetTask = ({ taskId, onSuccess }) => {
   return useQuery({
     queryKey: ["task", taskId],
+    // Busca uma tarefa específica e sincroniza o formulário com o resultado
     queryFn: async () => {
       try {
         const response = await fetch(`http://localhost:3000/tasks/${taskId}`);
