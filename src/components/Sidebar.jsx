@@ -4,7 +4,7 @@ import SidebarLink from "./SidebarLink";
 const Sidebar = () => {
   return (
     <aside className="h-screen bg-white">
-      <div className="after:bg-brand-primary w-75 space-y-4 px-8 py-6 after:mt-6 after:block after:h-px after:w-full">
+      <div className="after:bg-brand-primary w-75 min-w-75 space-y-4 px-8 py-6 after:mt-6 after:block after:h-px after:w-full">
         <h1 className="text-brand-primary text-xl font-semibold">
           <a href="/">Task Manager</a>
         </h1>
@@ -18,11 +18,11 @@ const Sidebar = () => {
       <div className="px-4 py-2">
         <nav>
           <ul className="grid gap-2">
-            <SidebarLink>
+            <SidebarLink href="/" state="active">
               <HomeIcon />
               Início
             </SidebarLink>
-            <SidebarLink state="active">
+            <SidebarLink href="/tasks">
               <TasksIcon />
               Minhas tarefas
             </SidebarLink>
