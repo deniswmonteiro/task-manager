@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { taskMutationKeys } from "../../keys/mutations";
 import { taskQueryKeys } from "../../keys/queries";
 import { api } from "../../lib/axios";
 
@@ -7,7 +8,7 @@ export const useAddTask = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: "addTask",
+    mutationKey: taskMutationKeys.add(),
     // Envia a nova tarefa para a API
     mutationFn: async task => {
       try {
