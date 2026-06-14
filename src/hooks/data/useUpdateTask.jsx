@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { taskQueryKeys } from "../../keys/queries";
 import { api } from "../../lib/axios";
 
 export const useUpdateTask = taskId => {
@@ -20,7 +21,7 @@ export const useUpdateTask = taskId => {
     },
     onSuccess: updatedTask => {
       // Substitui no cache apenas a tarefa retornada pela API
-      queryClient.setQueryData(["tasks"], (tasksCache = []) => {
+      queryClient.setQueryData(taskQueryKeys.getAll(), (tasksCache = []) => {
         return tasksCache.map(task =>
           task.id === updatedTask.id ? updatedTask : task
         );

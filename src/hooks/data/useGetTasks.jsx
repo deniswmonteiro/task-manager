@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { taskQueryKeys } from "../../keys/queries";
 import { api } from "../../lib/axios";
 
 export const useGetTasks = () => {
   return useQuery({
-    queryKey: ["tasks"],
+    queryKey: taskQueryKeys.getAll(),
     // Busca a lista completa de tarefas
     queryFn: async () => {
       try {

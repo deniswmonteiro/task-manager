@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { taskQueryKeys } from "../../keys/queries";
 import { api } from "../../lib/axios";
 
 export const useAddTask = () => {
@@ -20,7 +21,7 @@ export const useAddTask = () => {
     },
     onSuccess: newTask => {
       // Mantém a lista atualizada no cache sem precisar buscar todas as tarefas de novo
-      queryClient.setQueryData(["tasks"], (tasksCache = []) => {
+      queryClient.setQueryData(taskQueryKeys.getAll(), (tasksCache = []) => {
         return [...tasksCache, newTask];
       });
     },

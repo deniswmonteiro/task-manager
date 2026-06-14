@@ -48,7 +48,7 @@ const TaskDetailsPage = () => {
     mutateUpdate(task, {
       onSuccess: () => {
         toast.success("Tarefa atualizada com sucesso.");
-        navigate("/");
+        navigate("/tasks");
       },
       onError: () => {
         toast.error("Erro ao atualizar a tarefa. Tente novamente.");
@@ -61,7 +61,7 @@ const TaskDetailsPage = () => {
     mutateDelete(undefined, {
       onSuccess: () => {
         toast.success("Tarefa excluída com sucesso.");
-        navigate("/");
+        navigate("/tasks");
       },
       onError: () => {
         toast.error("Erro ao excluir tarefa. Tente novamente.");
@@ -78,14 +78,14 @@ const TaskDetailsPage = () => {
         <div className="flex w-full items-end justify-between">
           <div className="flex flex-col">
             <Link
-              to={"/"}
+              to={"/tasks"}
               className="bg-brand-primary text-brand-white hover:shadow-brand-primary mb-3 flex h-7 w-7 items-center justify-center rounded-full duration-300 hover:shadow-sm hover:transition-all hover:duration-300"
             >
               <ArrowIcon />
             </Link>
             <div className="mb-1.5 flex items-center gap-1.5 text-xs">
               <Link
-                to={"/"}
+                to={"/tasks"}
                 className="text-brand-text-gray hover:text-brand-dark-gray duration-300 hover:transition-all hover:duration-300"
               >
                 Minhas tarefas
