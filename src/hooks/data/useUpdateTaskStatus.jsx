@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { taskMutationKeys } from "../../keys/mutations";
 import { taskQueryKeys } from "../../keys/queries";
 import { api } from "../../lib/axios";
 
@@ -7,12 +8,20 @@ export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["updateTaskStatus"],
+    mutationKey: taskMutationKeys.updateStatus(),
     // Atualiza o status da tarefa
     mutationFn: async task => {
-      const { data: updatedTask } = await api.patch(`/tasks/${task.id}`, task);
+      try {
+        const { data: updatedTask } = await api.patch(
+          `/tasks/${task.id}`,
+          task
+        );
 
-      return updatedTask;
+        return updatedTask;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
     onMutate: async updatedTask => {
       // Evita que um refetch em andamento sobrescreva a atualização otimista
