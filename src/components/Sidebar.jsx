@@ -18,11 +18,11 @@ const Sidebar = () => {
       <div className="px-4 py-2">
         <nav>
           <ul className="grid gap-2">
-            <SidebarLink href="/" state="active">
+            <SidebarLink to="/">
               <HomeIcon />
               Início
             </SidebarLink>
-            <SidebarLink href="/tasks">
+            <SidebarLink to="/tasks">
               <TasksIcon />
               Minhas tarefas
             </SidebarLink>
