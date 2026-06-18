@@ -7,18 +7,15 @@ import {
   LoaderIcon,
   MoonIcon,
   SunIcon,
-  TrashIcon,
 } from "../assets/icons";
 import { useGetTasks } from "../hooks/data/useGetTasks";
 import { useUpdateTaskStatus } from "../hooks/data/useUpdateTaskStatus";
-import AddTaskModal from "./AddTaskModal";
-import Button from "./Button";
+import Header from "./Header";
 import Task from "./Task";
 
 const Tasks = () => {
   const { data: tasks = [], isLoading } = useGetTasks();
 
-  const [addTaskModalIsOpen, setAddTaskModalIsOpen] = React.useState(false);
   const { mutate: mutateUpdateTaskStatus } = useUpdateTaskStatus();
 
   // A tela exibe a mesma lista separada por período do dia
@@ -54,29 +51,11 @@ const Tasks = () => {
   };
 
   return (
-    <main className="h-screen w-full overflow-y-auto px-8 py-16">
-      {/* Ações */}
-      <section className="flex w-full justify-between">
-        <div>
-          <span className="text-brand-primary text-xs font-semibold">
-            Minhas tarefas
-          </span>
-          <h2 className="text-xl font-semibold">Minhas tarefas</h2>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button color="ghost">
-            Limpar tarefas
-            <TrashIcon />
-          </Button>
-          <Button color="primary" onClick={() => setAddTaskModalIsOpen(true)}>
-            Nova tarefa
-            <AddIcon />
-          </Button>
-        </div>
-      </section>
+    <main className="h-screen w-full space-y-6 overflow-y-auto px-8 py-16">
+      <Header title="Minhas Tarefas" subtitle="Minhas Tarefas" />
 
       {/* Lista de tarefas */}
-      <section className="mt-6 grid gap-6 rounded-xl">
+      <section className="grid gap-6 rounded-xl">
         {isLoading ? (
           <div className="bg-brand-white text-brand-primary flex items-center justify-center gap-2 rounded-lg p-6 text-sm">
             Carregando tarefas
@@ -105,11 +84,6 @@ const Tasks = () => {
           </>
         )}
       </section>
-
-      <AddTaskModal
-        modalIsOpen={addTaskModalIsOpen}
-        handleModalClose={() => setAddTaskModalIsOpen(false)}
-      />
     </main>
   );
 };

@@ -6,9 +6,9 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import HomePage from "./pages/Home.jsx";
-import TaskDetailsPage from "./pages/TaskDetails.jsx";
-import TasksPage from "./pages/Tasks.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import TaskDetailsPage from "./pages/TaskDetailsPage.jsx";
+import TasksPage from "./pages/TasksPage.jsx";
 
 // Cliente único do React Query usado para compartilhar cache entre telas
 const queryClient = new QueryClient();

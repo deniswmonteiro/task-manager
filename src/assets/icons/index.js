@@ -4,14 +4,15 @@ import CheckIcon from "./check.svg?react";
 import ChevronIcon from "./chevron.svg?react";
 import CloudSunIcon from "./cloud-sun.svg?react";
 import DetailsIcon from "./details.svg?react";
+import GlassWaterIcon from "./glass-water.svg?react";
 import HomeIcon from "./home.svg?react";
+import LayoutListIcon from "./layout-list.svg?react";
 import LoaderIcon from "./loader.svg?react";
 import MoonIcon from "./moon.svg?react";
 import SunIcon from "./sun.svg?react";
 import TasksIcon from "./tasks.svg?react";
 import TrashIcon from "./trash.svg?react";
 
-// Barrel dos ícones SVG para simplificar os imports nos componentes.
 export {
   AddIcon,
   ArrowIcon,
@@ -19,7 +20,9 @@ export {
   ChevronIcon,
   CloudSunIcon,
   DetailsIcon,
+  GlassWaterIcon,
   HomeIcon,
+  LayoutListIcon,
   LoaderIcon,
   MoonIcon,
   SunIcon,
