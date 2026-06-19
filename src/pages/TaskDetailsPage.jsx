@@ -16,7 +16,7 @@ const TaskDetailsPage = () => {
   const navigate = useNavigate();
   const { taskId } = useParams();
 
-  // O reset será usado para preencher o formulário depois que a tarefa carregar.
+  // O reset será usado para preencher o formulário depois que a tarefa carregar
   const {
     register,
     handleSubmit,

@@ -4,10 +4,13 @@ import { tv } from "tailwind-variants";
 
 import { DetailsIcon, LoaderIcon, TrashIcon } from "../assets/icons";
 import { useDeleteTask } from "../hooks/data/useDeleteTask";
+import { useUpdateTask } from "../hooks/data/useUpdateTask";
 import Button from "./Button";
 import Checkbox from "./form/Checkbox";
 
-const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
+const TaskItem = ({ id, title, status }) => {
+  const { mutate: mutateUpdateTask } = useUpdateTask(id);
+
   const { mutate: mutateDeleteTask, isPending: deleteIsPending } =
     useDeleteTask(id);
 
@@ -24,6 +27,36 @@ const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
       status: "not_started",
     },
   });
+
+  const handleTaskStatusChange = () => {
+    let message;
+    let taskStatus;
+
+    if (status === "not_started") {
+      taskStatus = "in_progress";
+      message = "Tarefa iniciada com sucesso.";
+    } else if (status === "in_progress") {
+      taskStatus = "done";
+      message = "Tarefa concluída com sucesso.";
+    } else {
+      taskStatus = "not_started";
+      message = "Tarefa reiniciada com sucesso.";
+    }
+
+    mutateUpdateTask(
+      { status: taskStatus },
+      {
+        onSuccess: () => {
+          toast.success(message);
+        },
+        onError: () => {
+          toast.error(
+            "Erro ao atualizar status da tarefa. Por favor, tente novamente."
+          );
+        },
+      }
+    );
+  };
 
   const handleDeleteClick = async () => {
     // A remoção do item também atualiza o cache no hook useDeleteTask
@@ -43,7 +76,7 @@ const TaskItem = ({ id, title, status, handleTaskChkChange }) => {
         <Checkbox
           id={id}
           status={status}
-          handleTaskChkChange={handleTaskChkChange}
+          handleTaskStatusChange={handleTaskStatusChange}
         />
         {title}
       </p>

@@ -12,7 +12,7 @@ import { useGetTasks } from "../hooks/data/useGetTasks";
 const HomePage = () => {
   const { data: tasks } = useGetTasks();
 
-  const allTasks = tasks.length;
+  const allTasks = tasks && tasks.length;
   const completedTasks =
     tasks && tasks.filter(task => task.status === "done").length;
   const inProgressTasks =
