@@ -1,6 +1,6 @@
 import TaskItem from "./TaskItem";
 
-const Task = ({ icon, title, tasks, onDeleteTaskSuccess }) => {
+const Task = ({ icon, title, tasks }) => {
   return (
     <div className="rounded-lg bg-white p-6">
       <div className="border-brand-light-gray/70 mb-3 border-b border-solid pb-1.25">
@@ -22,7 +22,6 @@ const Task = ({ icon, title, tasks, onDeleteTaskSuccess }) => {
               id={task.id}
               title={task.title}
               status={task.status}
-              onDeleteTaskSuccess={onDeleteTaskSuccess}
             />
           ))
         )}

@@ -14,7 +14,7 @@ const Header = ({ title, subtitle }) => {
           <span className="text-brand-primary text-xs font-semibold">
             {subtitle}
           </span>
-          <h2 className="text-xl font-semibold">{title}</h2>
+          <h1 className="text-xl font-semibold">{title}</h1>
         </div>
         <div className="flex items-center gap-3">
           <Button color="ghost">
