@@ -22,7 +22,7 @@ const Sidebar = () => {
               <HomeIcon />
               Início
             </SidebarLink>
-            <SidebarLink to="/tasks">
+            <SidebarLink to="/tasks" activePaths={["/task"]}>
               <TasksIcon />
               Minhas tarefas
             </SidebarLink>
