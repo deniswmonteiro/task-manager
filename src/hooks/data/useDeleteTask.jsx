@@ -20,11 +20,12 @@ export const useDeleteTask = taskId => {
         throw error;
       }
     },
-    onSuccess: deletedTask => {
-      // Remove do cache a mesma tarefa apagada no servidor
+    onSuccess: () => {
+      // A resposta do DELETE pode vir vazia; o id confiável é o recebido pelo hook.
       queryClient.setQueryData(taskQueryKeys.getAll(), (tasksCache = []) => {
-        return tasksCache.filter(task => task.id !== deletedTask.id);
+        return tasksCache.filter(task => String(task.id) !== String(taskId));
       });
+      queryClient.removeQueries({ queryKey: taskQueryKeys.getOne(taskId) });
     },
     retry: false,
   });
